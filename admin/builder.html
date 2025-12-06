@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - German Learning</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="emoji">🇩🇪</span>
+            <h1>Admin Dashboard</h1>
+        </div>
+        <nav class="sidebar-nav">
+            <!-- Topics Section -->
+            <div class="nav-section">
+                <div class="nav-section-title">Topics</div>
+                <div id="topic-list">
+                    <!-- Topics injected here -->
+                </div>
+                <button id="add-topic-btn" class="add-btn">+ New Topic</button>
+            </div>
+
+            <!-- Tools Section -->
+            <div class="nav-section">
+                <div class="nav-section-title">Tools</div>
+                <div class="nav-item" data-view="tools">
+                    <span class="icon">🛠️</span>
+                    <span>Text Tools</span>
+                </div>
+                <div class="nav-item" data-view="export">
+                    <span class="icon">📦</span>
+                    <span>Export Data</span>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="top-bar">
+            <h2 id="current-view-title">Select a Topic</h2>
+            <div class="top-bar-actions">
+                <button id="save-all-btn" class="btn btn-primary">
+                    <span>📥</span> Export All
+                </button>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state">
+                <span class="emoji">📚</span>
+                <h3>Select a Topic</h3>
+                <p>Choose a topic from the sidebar to edit flashcards, or use the text tools.</p>
+            </div>
+
+            <!-- Card Editor View -->
+            <div id="editor-view" class="hidden">
+                <div class="editor-grid">
+                    <div class="panel card-list">
+                        <div class="panel-header">
+                            <h3>Cards (<span id="card-count">0</span>)</h3>
+                            <button id="add-card-btn" class="btn btn-sm btn-primary">+ Add Card</button>
+                        </div>
+                        <div class="card-items" id="card-items">
+                            <!-- Cards injected here -->
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Quick Import</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p class="text-muted" style="font-size: 0.8125rem; margin-bottom: 0.75rem;">
+                                Paste CSV (German;Ukrainian) or JSON to import cards.
+                            </p>
+                            <textarea id="quick-import-area" class="textarea"
+                                placeholder="German;Ukrainian&#10;Hallo;Привіт"></textarea>
+                            <div class="tool-actions">
+                                <button id="import-btn" class="btn btn-sm">Import</button>
+                                <button id="copy-json-btn" class="btn btn-sm">Copy JSON</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Tools View -->
+            <div id="tools-view" class="hidden">
+                <div class="tools-grid">
+                    <!-- Concatenator -->
+                    <div class="tool-card">
+                        <h4>🔗 Concatenator</h4>
+                        <p>Merge multiple lines into one with a separator.</p>
+                        <textarea id="concat-input" class="textarea"
+                            placeholder="Line 1&#10;Line 2&#10;Line 3"></textarea>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; margin: 0.5rem 0;">
+                            <label style="font-size: 0.8125rem;">Separator:</label>
+                            <input type="text" id="concat-sep" value=", "
+                                style="width: 60px; padding: 0.25rem 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--admin-bg); color: var(--text-primary);">
+                        </div>
+                        <div class="tool-actions">
+                            <button class="btn btn-sm btn-primary" onclick="Tools.concatenate()">Merge</button>
+                            <button class="btn btn-sm" onclick="Tools.copyResult('concat-output')">Copy</button>
+                        </div>
+                        <textarea id="concat-output" class="textarea" readonly placeholder="Result..."></textarea>
+                    </div>
+
+                    <!-- Splitter -->
+                    <div class="tool-card">
+                        <h4>✂️ Splitter</h4>
+                        <p>Split text by delimiter into separate lines.</p>
+                        <textarea id="split-input" class="textarea" placeholder="word1, word2, word3"></textarea>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; margin: 0.5rem 0;">
+                            <label style="font-size: 0.8125rem;">Delimiter:</label>
+                            <input type="text" id="split-sep" value=", "
+                                style="width: 60px; padding: 0.25rem 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--admin-bg); color: var(--text-primary);">
+                        </div>
+                        <div class="tool-actions">
+                            <button class="btn btn-sm btn-primary" onclick="Tools.split()">Split</button>
+                            <button class="btn btn-sm" onclick="Tools.copyResult('split-output')">Copy</button>
+                        </div>
+                        <textarea id="split-output" class="textarea" readonly placeholder="Result..."></textarea>
+                    </div>
+
+                    <!-- Case Converter -->
+                    <div class="tool-card">
+                        <h4>🔤 Case Converter</h4>
+                        <p>Convert text case: UPPER, lower, Title.</p>
+                        <textarea id="case-input" class="textarea" placeholder="Enter text..."></textarea>
+                        <div class="tool-actions">
+                            <button class="btn btn-sm" onclick="Tools.toCase('upper')">UPPER</button>
+                            <button class="btn btn-sm" onclick="Tools.toCase('lower')">lower</button>
+                            <button class="btn btn-sm" onclick="Tools.toCase('title')">Title</button>
+                            <button class="btn btn-sm" onclick="Tools.copyResult('case-output')">Copy</button>
+                        </div>
+                        <textarea id="case-output" class="textarea" readonly placeholder="Result..."></textarea>
+                    </div>
+
+                    <!-- Trimmer -->
+                    <div class="tool-card">
+                        <h4>🧹 Trimmer</h4>
+                        <p>Remove extra spaces and blank lines.</p>
+                        <textarea id="trim-input" class="textarea"
+                            placeholder="Text with   extra   spaces..."></textarea>
+                        <div class="tool-actions">
+                            <button class="btn btn-sm btn-primary" onclick="Tools.trim()">Clean</button>
+                            <button class="btn btn-sm" onclick="Tools.copyResult('trim-output')">Copy</button>
+                        </div>
+                        <textarea id="trim-output" class="textarea" readonly placeholder="Result..."></textarea>
+                    </div>
+
+                    <!-- Bulk Formatter -->
+                    <div class="tool-card">
+                        <h4>📋 Bulk Formatter</h4>
+                        <p>Convert CSV/TSV to JSON card format.</p>
+                        <textarea id="bulk-input" class="textarea"
+                            placeholder="German;Ukrainian&#10;Hallo;Привіт&#10;Danke;Дякую"></textarea>
+                        <div class="tool-actions">
+                            <button class="btn btn-sm btn-primary" onclick="Tools.bulkFormat()">Format</button>
+                            <button class="btn btn-sm" onclick="Tools.copyResult('bulk-output')">Copy</button>
+                        </div>
+                        <textarea id="bulk-output" class="textarea" readonly placeholder="JSON result..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export View -->
+            <div id="export-view" class="hidden">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Export Project Data</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p class="text-muted" style="margin-bottom: 1rem;">
+                            Download all topics and card data as JSON files. Place them in the <code>/data</code>
+                            folder.
+                        </p>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                            <button id="export-topics-btn" class="btn btn-primary">📁 Download topics.json</button>
+                            <button id="export-current-btn" class="btn">📄 Download Current Deck</button>
+                            <button id="export-all-btn" class="btn">📦 Download All Decks</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="topic-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="modal-title">New Topic</h3>
+            <div class="form-group">
+                <label>Title (Ukrainian)</label>
+                <input type="text" id="topic-title-input" placeholder="e.g., Тварини (Animals)">
+            </div>
+            <div class="form-group">
+                <label>ID (Unique, lowercase)</label>
+                <input type="text" id="topic-id-input" placeholder="e.g., animals">
+            </div>
+            <div class="modal-actions">
+                <button id="modal-cancel" class="btn">Cancel</button>
+                <button id="modal-save" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>
