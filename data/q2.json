@@ -1,1 +1,802 @@
-[]
+[
+  {
+    "de": "Was kostet das ganze Paket?",
+    "uk": "Скільки за весь пакет?"
+  },
+  {
+    "de": "Warum nicht?",
+    "uk": "Чому ні?"
+  },
+  {
+    "de": "Wer ist diese Person?",
+    "uk": "Хто ця людина?"
+  },
+  {
+    "de": "Warum hörst du mir nicht zu?",
+    "uk": "Чому ти мене не слухаєш?"
+  },
+  {
+    "de": "Wo ist die Bank?",
+    "uk": "Де банк?"
+  },
+  {
+    "de": "Ich wohne in Hyōgo.",
+    "uk": "Я мешкаю в Хіоґо."
+  },
+  {
+    "de": "Wo ist der Präsident?",
+    "uk": "Де президент?"
+  },
+  {
+    "de": "Wie lange hast du dort gelebt?",
+    "uk": "Скільки ти вже тут живеш?"
+  },
+  {
+    "de": "Wer bist du?",
+    "uk": "Ти хто?"
+  },
+  {
+    "de": "Du wirst dich schnell daran gewöhnen, hier zu wohnen.",
+    "uk": "Ти швидко звикнеш тут жити."
+  },
+  {
+    "de": "Wo sind wir?",
+    "uk": "Де ми?"
+  },
+  {
+    "de": "Ich werde euch nicht stören.",
+    "uk": "Я вас не буду турбувати."
+  },
+  {
+    "de": "Wozu spielst du Baseball?",
+    "uk": "Навіщо ти граєш у бейсбол?"
+  },
+  {
+    "de": "Sag mir, was passiert ist.",
+    "uk": "Скажи мені, що трапилося."
+  },
+  {
+    "de": "Wo möchten Sie sitzen?",
+    "uk": "Де б ви хотіли сісти?"
+  },
+  {
+    "de": "Grüß dich, John! Wie geht’s?",
+    "uk": "Привіт, Джоне! Як справи?"
+  },
+  {
+    "de": "Wann würde es Ihnen passen?",
+    "uk": "Коли вам буде зручно?"
+  },
+  {
+    "de": "Warum bist du nach Tokio gegangen?",
+    "uk": "Чому ти поїхала до Токіо?"
+  },
+  {
+    "de": "Singt bitte etwas.",
+    "uk": "Заспівайте щось, прошу вас."
+  },
+  {
+    "de": "Wie schade!",
+    "uk": "Дуже шкода!"
+  },
+  {
+    "de": "Wie viele Äpfel?",
+    "uk": "Скільки яблук?"
+  },
+  {
+    "de": "Es ist zu schwierig.",
+    "uk": "Це занадто складно."
+  },
+  {
+    "de": "Das ist etwas anderes.",
+    "uk": "Це інша справа."
+  },
+  {
+    "de": "Sie hat sich entschieden, Ärztin zu werden.",
+    "uk": "Вона вирішила стати лікарем."
+  },
+  {
+    "de": "Wie ist das passiert?",
+    "uk": "Як то сталося?"
+  },
+  {
+    "de": "Wo ist die Bibliothek?",
+    "uk": "Де бібліотека?"
+  },
+  {
+    "de": "Ich werde mich darum kümmern.",
+    "uk": "Я подбаю про це."
+  },
+  {
+    "de": "Herr Green, Sie werden am Telefon verlangt.",
+    "uk": "Пане Грін, вас до телефону."
+  },
+  {
+    "de": "Wie viel ist dieser Ring wert?",
+    "uk": "Скільки коштує це кільце?"
+  },
+  {
+    "de": "Wie viele Brüder hast du?",
+    "uk": "Скільки у тебе братів?"
+  },
+  {
+    "de": "Wie viele Brüder habt ihr?",
+    "uk": "Скільки у вас братів?"
+  },
+  {
+    "de": "Wie viele Brüder haben Sie?",
+    "uk": "Скільки у вас братів?"
+  },
+  {
+    "de": "Wer sind Sie?",
+    "uk": "Ви хто?"
+  },
+  {
+    "de": "Gold ist schwerer als Silber.",
+    "uk": "Золото важче від срібла."
+  },
+  {
+    "de": "Wer hat das Radium entdeckt?",
+    "uk": "Хто відкрив радій?"
+  },
+  {
+    "de": "Ich wollte Philosoph werden.",
+    "uk": "Я хотів стати філософом."
+  },
+  {
+    "de": "Wo ist die nächste Kunstgalerie?",
+    "uk": "Де найближча художня галерея?"
+  },
+  {
+    "de": "Wasch dich.",
+    "uk": "Вимийся."
+  },
+  {
+    "de": "Wie alt ist dieser Zoo?",
+    "uk": "Скільки років цьому зоопарку?"
+  },
+  {
+    "de": "Ich höre etwas.",
+    "uk": "Я щось чую."
+  },
+  {
+    "de": "Was stellt die Firma her?",
+    "uk": "Що виробляє компанія?"
+  },
+  {
+    "de": "Was zum Teufel machst du?",
+    "uk": "Що ти, в біса, робиш?"
+  },
+  {
+    "de": "Wer zum Teufel bist du?",
+    "uk": "Хто ти в біса такий?"
+  },
+  {
+    "de": "Wo bin ich?",
+    "uk": "Де я?"
+  },
+  {
+    "de": "Ich wohne in der Nähe.",
+    "uk": "Я живу тут неподалік."
+  },
+  {
+    "de": "Ist es etwas Ernstes?",
+    "uk": "Це щось серйозне?"
+  },
+  {
+    "de": "Grammatik ist etwas sehr Schwieriges.",
+    "uk": "Граматика — дуже складна штука."
+  },
+  {
+    "de": "Wo hast du Italienisch gelernt?",
+    "uk": "Де ти вивчив італійську?"
+  },
+  {
+    "de": "Wo ist der Lift?",
+    "uk": "Де ліфт?"
+  },
+  {
+    "de": "Ich wünschte, ich wäre wieder jung.",
+    "uk": "Хотів би я знову бути молодим."
+  },
+  {
+    "de": "Wo ist Papa?",
+    "uk": "Де тато?"
+  },
+  {
+    "de": "Was hältst du von dem neuen Film?",
+    "uk": "Що ти думаєш про новий фільм?"
+  },
+  {
+    "de": "Wo ist Tony?",
+    "uk": "Де Тоні?"
+  },
+  {
+    "de": "In Washington blühen jetzt die Kirschbäume.",
+    "uk": "У Вашингтоні зараз цвіте вишня."
+  },
+  {
+    "de": "Lies, was du willst.",
+    "uk": "Читай що хочеш."
+  },
+  {
+    "de": "Wo ist er geboren und aufgewachsen?",
+    "uk": "Де він народився й виріс?"
+  },
+  {
+    "de": "Wo ist das Café?",
+    "uk": "Де кава?"
+  },
+  {
+    "de": "Warum hast du das gemacht?",
+    "uk": "Для чого ти це зробила?"
+  },
+  {
+    "de": "Was hat sie so aufgebracht?",
+    "uk": "Що її так розлютило?"
+  },
+  {
+    "de": "Was macht er?",
+    "uk": "Що він робить?"
+  },
+  {
+    "de": "Es war zu schwierig für mich.",
+    "uk": "Це було занадто складно для мене."
+  },
+  {
+    "de": "Erinnerst du dich, was sie sagte?",
+    "uk": "Ти пам'ятаєш, що вона сказала?"
+  },
+  {
+    "de": "Wann bist du aufgestanden?",
+    "uk": "О котрій годині ти встав?"
+  },
+  {
+    "de": "Wie geht es dir, Tom?",
+    "uk": "Як твої справи, Томе?"
+  },
+  {
+    "de": "Was ist Ihr größtes Projekt?",
+    "uk": "Який ваш найбільший проект?"
+  },
+  {
+    "de": "Wann hast du schwimmen gelernt?",
+    "uk": "Коли ти навчився плавати?"
+  },
+  {
+    "de": "Er fragte sie, wo sie lebte.",
+    "uk": "Він спитав її, де вона живе."
+  },
+  {
+    "de": "Was noch?",
+    "uk": "Що ще?"
+  },
+  {
+    "de": "Wo ist der Briefkasten?",
+    "uk": "Де знаходиться поштова скринька?"
+  },
+  {
+    "de": "Ich wasche mich.",
+    "uk": "Я миюсь."
+  },
+  {
+    "de": "Warum studierst du?",
+    "uk": "Чому ти навчаєшся?"
+  },
+  {
+    "de": "Ich verstehe nicht warum all das nötig ist.",
+    "uk": "Я не розумію, навіщо це все потрібне."
+  },
+  {
+    "de": "Wo ist es passiert?",
+    "uk": "Де це трапилося?"
+  },
+  {
+    "de": "Wo ist es geschehen?",
+    "uk": "Де це трапилося?"
+  },
+  {
+    "de": "Wer da?",
+    "uk": "Хто там?"
+  },
+  {
+    "de": "Ich verstehe, was du sagst.",
+    "uk": "Я розумію, що ти говориш."
+  },
+  {
+    "de": "Waschen Sie sich!",
+    "uk": "Умийтеся."
+  },
+  {
+    "de": "Wer hat Karaoke erfunden?",
+    "uk": "Хто винайшов караоке?"
+  },
+  {
+    "de": "Tom ist so groß wie Jim.",
+    "uk": "Том такий самий високий, як і Джим."
+  },
+  {
+    "de": "Was der Bauer nicht kennt, das frisst er nicht.",
+    "uk": "Чого селянин не знає, того він не їсть."
+  },
+  {
+    "de": "Welche Sprachen werden in Korea gesprochen?",
+    "uk": "Якими мовами розмовляють у Кореї?"
+  },
+  {
+    "de": "Wo ist das nächste Telefon?",
+    "uk": "Де найближчий телефон?"
+  },
+  {
+    "de": "Wo haben Sie Italienisch gelernt?",
+    "uk": "Де ви вивчили італійську?"
+  },
+  {
+    "de": "Wie findet man Nahrung im Weltraum?",
+    "uk": "Як можна знайти їжу в космосі?"
+  },
+  {
+    "de": "Wohnen Sie in Sasayama?",
+    "uk": "Ви живете в Сасаямi?"
+  },
+  {
+    "de": "Wohnt ihr in Sasayama?",
+    "uk": "Ви живете в Сасаямi?"
+  },
+  {
+    "de": "Wie ist die Temperatur?",
+    "uk": "Яка температура?"
+  },
+  {
+    "de": "Wo ist er?",
+    "uk": "Де він?"
+  },
+  {
+    "de": "Sie ist Briefträgerin geworden.",
+    "uk": "Вона стала листоношою."
+  },
+  {
+    "de": "Wie viel hast du dafür bezahlt?",
+    "uk": "Скільки ти за це заплатила?"
+  },
+  {
+    "de": "Warum hat sie mich unterbrochen?",
+    "uk": "Чому вона мене перебила?"
+  },
+  {
+    "de": "Wo ist die Wäsche?",
+    "uk": "Де знаходиться пральня?"
+  },
+  {
+    "de": "Das Wort wird nicht mehr benutzt.",
+    "uk": "Це слово більше не використовується."
+  },
+  {
+    "de": "Wie geht es dir jetzt?",
+    "uk": "Як ти зараз?"
+  },
+  {
+    "de": "Wie hoch ist dieser Turm?",
+    "uk": "Якої висоти ця вежа?"
+  },
+  {
+    "de": "Was sind Sie von Beruf?",
+    "uk": "Хто ви за фахом?"
+  },
+  {
+    "de": "Sie wohnt in Kyoto.",
+    "uk": "Вона живе в Кіото."
+  },
+  {
+    "de": "Wer hat die Tasse zerbrochen?",
+    "uk": "Хто розбив чашку?"
+  },
+  {
+    "de": "Wie viele Sprachen sprichst du?",
+    "uk": "Скількома мовами ти розмовляєш?"
+  },
+  {
+    "de": "Frag sie, wann sie zurückkommt.",
+    "uk": "Спитай її, коли вона повернеться."
+  },
+  {
+    "de": "Bitte, trink etwas!",
+    "uk": "Випийте щось."
+  },
+  {
+    "de": "Wer zum Teufel war das?",
+    "uk": "Хто це, в біса, був?"
+  },
+  {
+    "de": "Warum kommt er nicht zurück?",
+    "uk": "Чому він не повертається?"
+  },
+  {
+    "de": "Ist etwas passiert?",
+    "uk": "Щось трапилось?"
+  },
+  {
+    "de": "Wie findest du diesen Pulli?",
+    "uk": "Як тобі цей светр?"
+  },
+  {
+    "de": "Denkst du, dass so etwas möglich ist?",
+    "uk": "Думаєш, це можливо?"
+  },
+  {
+    "de": "Ich muss dich etwas fragen.",
+    "uk": "Мені треба тебе про щось запитати."
+  },
+  {
+    "de": "Ist es wahr, dass er das Rennen gewonnen hat?",
+    "uk": "Це правда, що він переміг у перегонах?"
+  },
+  {
+    "de": "Wo wohnen Sie?",
+    "uk": "Де ви живете?"
+  },
+  {
+    "de": "Warum liebst du mich?",
+    "uk": "Чому ти кохаєш мене?"
+  },
+  {
+    "de": "Wer nicht fragt, kann nicht leben.",
+    "uk": "Той, хто не може запитати, не зможе жити."
+  },
+  {
+    "de": "Wie fühlst du dich?",
+    "uk": "Як ти себе почуваєш?"
+  },
+  {
+    "de": "Was zum Teufel ist das?",
+    "uk": "Що це в біса таке?"
+  },
+  {
+    "de": "Wie sagt man \"danke\" auf Japanisch?",
+    "uk": "Як сказати \"дякую\" японською?"
+  },
+  {
+    "de": "Das Gerücht erwies sich als wahr.",
+    "uk": "Плітка виявилася правдою."
+  },
+  {
+    "de": "Warum hast du aufgehört?",
+    "uk": "Чому ти звільнився?"
+  },
+  {
+    "de": "Ich wollte mich nicht erkälten, also bin ich nicht hinausgegangen.",
+    "uk": "Я не хотів застудитися, тому не виходив."
+  },
+  {
+    "de": "Er wohnt nebenan.",
+    "uk": "Він живе по сусідству."
+  },
+  {
+    "de": "Sie wohnt in New York.",
+    "uk": "Вона мешкає в Нью-Йорку."
+  },
+  {
+    "de": "Wann kamst du in China an?",
+    "uk": "Коли ти приїхав до Китаю?"
+  },
+  {
+    "de": "Wie dumm!",
+    "uk": "Який ідіотизм!"
+  },
+  {
+    "de": "Wann fängt die Show an?",
+    "uk": "Коли починається програма?"
+  },
+  {
+    "de": "Ihre Antwort war nicht richtig.",
+    "uk": "Її відповідь була невірною."
+  },
+  {
+    "de": "Ihre Antwort war falsch.",
+    "uk": "Її відповідь була невірною."
+  },
+  {
+    "de": "Ich bin so groß wie du.",
+    "uk": "Ми з тобою однакові на зріст."
+  },
+  {
+    "de": "Wo wohnt ihr alle?",
+    "uk": "Де ви всі живете?"
+  },
+  {
+    "de": "Was sucht ihr?",
+    "uk": "Що ви шукаєте?"
+  },
+  {
+    "de": "Was der Bauer nicht kennt, das isst er nicht.",
+    "uk": "Чого селянин не знає, того він не їсть."
+  },
+  {
+    "de": "Dieser Satz wird übersetzt werden.",
+    "uk": "Це речення перекладуть."
+  },
+  {
+    "de": "Was gefällt dir nicht?",
+    "uk": "Що тобі не подобається?"
+  },
+  {
+    "de": "Haben Sie gefunden, was Sie suchten?",
+    "uk": "Ви знайшли те, що шукали?"
+  },
+  {
+    "de": "Sie kann sowas nicht gesagt haben.",
+    "uk": "Вона не могла такого сказати."
+  },
+  {
+    "de": "Er vergisst dauernd etwas.",
+    "uk": "Він завжди все забуває."
+  },
+  {
+    "de": "Toms Antwort überraschte mich.",
+    "uk": "Відповідь Тома мене здивувала."
+  },
+  {
+    "de": "Ich verdiene doppelt so viel wie du.",
+    "uk": "Мій дохід вдвічі більший за твій."
+  },
+  {
+    "de": "Ich werde vierzehn.",
+    "uk": "Мені виповниться чотирнадцять."
+  },
+  {
+    "de": "Wo und wann treffen wir uns?",
+    "uk": "Де і коли ми зустрічаємось?"
+  },
+  {
+    "de": "Wie viel haben Sie dafür bezahlt?",
+    "uk": "Скільки ви за це заплатили?"
+  },
+  {
+    "de": "Wie viel habt ihr dafür bezahlt?",
+    "uk": "Скільки ви за це заплатили?"
+  },
+  {
+    "de": "Wie geht es euch allen?",
+    "uk": "Як у вас у всіх справи?"
+  },
+  {
+    "de": "Das Leben ist schwer.",
+    "uk": "Життя важке."
+  },
+  {
+    "de": "Wie gefällt dir das japanische Klima?",
+    "uk": "Як тобі японський клімат?"
+  },
+  {
+    "de": "Wo Leben ist, da ist Hoffnung.",
+    "uk": "Де є життя, є надія."
+  },
+  {
+    "de": "Sie musste ihre Worte vorsichtig wählen.",
+    "uk": "Вона мала стараннно добирати слова."
+  },
+  {
+    "de": "Kannst du das wiederholen?",
+    "uk": "Можеш сказати це знову?"
+  },
+  {
+    "de": "Antworten Sie auf Englisch.",
+    "uk": "Дайте відповідь англійською."
+  },
+  {
+    "de": "Antwortet auf Englisch.",
+    "uk": "Дайте відповідь англійською."
+  },
+  {
+    "de": "Warum hast du mir nicht geglaubt?",
+    "uk": "Чому ти мені не повірила?"
+  },
+  {
+    "de": "Warum hast du ihm nicht geholfen?",
+    "uk": "Чому ти не допомогла йому?"
+  },
+  {
+    "de": "Sie musste etwas Seltsames gefühlt haben.",
+    "uk": "Вона, напевно, відчула, що щось не так."
+  },
+  {
+    "de": "Wo wohnt er?",
+    "uk": "Де він живе?"
+  },
+  {
+    "de": "Wo bist du geboren?",
+    "uk": "Де ти народився?"
+  },
+  {
+    "de": "Wo sind Sie geboren?",
+    "uk": "Де ви народилися?"
+  },
+  {
+    "de": "Ich sehe so etwas zum ersten Mal.",
+    "uk": "Я таке вперше у житті бачу."
+  },
+  {
+    "de": "Wie faul du bist!",
+    "uk": "Який же ж ти ледачий!"
+  },
+  {
+    "de": "Wofür wird dieser Gegenstand benutzt?",
+    "uk": "Для чого використовується цей предмет?"
+  },
+  {
+    "de": "Kommt, wann ihr wollt.",
+    "uk": "Приходьте коли завгодно."
+  },
+  {
+    "de": "Sag mir, wo sie wohnt.",
+    "uk": "Скажи мені, де вона мешкає."
+  },
+  {
+    "de": "Mir ist es egal, was aus mir wird.",
+    "uk": "Мені байдуже, що зі мною станеться."
+  },
+  {
+    "de": "Wer schrieb dieses Gedicht?",
+    "uk": "Хто написав цей вірш?"
+  },
+  {
+    "de": "Woran denkst du?",
+    "uk": "Про що думаєш?"
+  },
+  {
+    "de": "Was machst du beruflich?",
+    "uk": "Хто ти за фахом?"
+  },
+  {
+    "de": "Wo ist Paris?",
+    "uk": "Де Париж?"
+  },
+  {
+    "de": "Was für Symptome haben Sie?",
+    "uk": "Які у вас симптоми?"
+  },
+  {
+    "de": "Du wohnst in Tokio, nicht wahr?",
+    "uk": "Ти мешкаєш у Токіо, так?"
+  },
+  {
+    "de": "Ich werde dich sehr vermissen.",
+    "uk": "Я буду дуже скучати за тобою."
+  },
+  {
+    "de": "Sie haben viele Wettbewerbe gewonnen.",
+    "uk": "Ви виграли багато змагань."
+  },
+  {
+    "de": "Sie hat viele Wettbewerbe gewonnen.",
+    "uk": "Вона виграла багато змагань."
+  },
+  {
+    "de": "Warum lernst du?",
+    "uk": "Чому ти навчаєшся?"
+  },
+  {
+    "de": "Wo ist der Wodka?",
+    "uk": "Де горілка?"
+  },
+  {
+    "de": "Wann würde es dir passen?",
+    "uk": "Коли тобі буде зручно?"
+  },
+  {
+    "de": "Wann würde es euch passen?",
+    "uk": "Коли вам буде зручно?"
+  },
+  {
+    "de": "Ich kann dieses Wort nicht verstehen.",
+    "uk": "Я не можу зрозуміти це слово."
+  },
+  {
+    "de": "Wer hat Amerika entdeckt?",
+    "uk": "Хто відкрив Америку?"
+  },
+  {
+    "de": "Wer ist diese Dame?",
+    "uk": "Хто ця жіночка?"
+  },
+  {
+    "de": "Wann kommt er?",
+    "uk": "Коли він прийде?"
+  },
+  {
+    "de": "Wie alt ist er?",
+    "uk": "Скільки йому років?"
+  },
+  {
+    "de": "Wo sind Sie?",
+    "uk": "Ви де?"
+  },
+  {
+    "de": "Suchst du etwas?",
+    "uk": "Ти щось шукаєш?"
+  },
+  {
+    "de": "Wo ist das Postamt?",
+    "uk": "Де знаходиться пошта?"
+  },
+  {
+    "de": "Wo ist das WC?",
+    "uk": "Де знаходиться туалет?"
+  },
+  {
+    "de": "Hast du hier etwas verloren?",
+    "uk": "Ти щось тут загубив?"
+  },
+  {
+    "de": "Warum so viel Hass?",
+    "uk": "Чому стільки ненависті?"
+  },
+  {
+    "de": "Was glaubst du, welche Farbe ihr gefällt?",
+    "uk": "Як ти думаєш, який колір вона любить?"
+  },
+  {
+    "de": "Wie hast du Esperanto gelernt?",
+    "uk": "Як ти вивчив есперанто?"
+  },
+  {
+    "de": "Die Leute werden mit dem Alter zynischer.",
+    "uk": "Люди стають цинічнішими з віком."
+  },
+  {
+    "de": "Antworte mir.",
+    "uk": "Дай мені відповідь."
+  },
+  {
+    "de": "Entschuldigen Sie, aber haben Sie etwas dagegen, wenn ich nach Ihrem Namen frage?",
+    "uk": "Перепрошую, ви не заперечуєте, якщо я запитаю вас про ваше ім'я?"
+  },
+  {
+    "de": "Wofür bist du dankbar?",
+    "uk": "За що ти вдячна?"
+  },
+  {
+    "de": "Ich bin wieder da.",
+    "uk": "Я повернувся."
+  },
+  {
+    "de": "Wann schließt diese Gaststätte?",
+    "uk": "О котрій зачиняється цей ресторан?"
+  },
+  {
+    "de": "Sie beobachtete, wie Schmetterlinge fliegen.",
+    "uk": "Вона стежила за тим, як літають метелики."
+  },
+  {
+    "de": "Tulpen werden bald blühen.",
+    "uk": "Скоро розквітнуть тюльпани."
+  },
+  {
+    "de": "Wo warst du denn?",
+    "uk": "Ну й де ти був?"
+  },
+  {
+    "de": "Sucht ihr etwas?",
+    "uk": "Ви щось шукаєте?"
+  },
+  {
+    "de": "Wie spricht man Ihren Nachnamen aus?",
+    "uk": "Як вимовляється ваше прізвище?"
+  },
+  {
+    "de": "Wie lange wohnt ihr schon hier?",
+    "uk": "Як давно ви тут живете?"
+  },
+  {
+    "de": "Wie lange wohnen Sie schon hier?",
+    "uk": "Як давно ви тут живете?"
+  },
+  {
+    "de": "Wie alt ist das Gemälde?",
+    "uk": "Скільки років цій картині?"
+  },
+  {
+    "de": "Wie lange sind Sie schon im Ausland?",
+    "uk": "Як довго Ви перебуваєте за кордоном?"
+  }
+]
