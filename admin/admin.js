@@ -536,21 +536,33 @@ const Dashboard = {
     // ============ IMPORT/EXPORT ============
     importData() {
         const text = this.elements.quickImportArea.value.trim();
+        if (!this.state.currentTopicId) {
+            alert('Please select a topic first');
+            return;
+        }
+
         try {
+            let newDeck;
             if (text.startsWith('[')) {
-                this.state.currentDeck = JSON.parse(text);
+                newDeck = JSON.parse(text);
             } else {
                 const lines = text.split('\n');
-                this.state.currentDeck = lines.map(line => {
+                newDeck = lines.map(line => {
                     const parts = line.split(/[;\t]/);
                     if (parts.length >= 2) return { de: parts[0].trim(), uk: parts[1].trim() };
                     return null;
                 }).filter(x => x);
             }
+
+            // CRITICAL FIX: Update the main decks store, not just the currentDeck reference
+            this.state.decks[this.state.currentTopicId] = newDeck;
+            this.state.currentDeck = newDeck;
+
             this.renderCards();
             this.updateTopicCount();
             this.saveToLocalStorage();
         } catch (e) {
+            console.error(e);
             alert('Invalid format');
         }
     },
