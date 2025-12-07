@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": "q1",
+    "title": "ПИТАННЯ №1",
+    "file": "data/q1.json",
+    "count": 200
+  },
+  {
+    "id": "q2",
+    "title": "ПИТАННЯ №2",
+    "file": "data/q2.json",
+    "count": 200
+  }
+]
