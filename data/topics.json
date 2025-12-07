@@ -1,14 +1,1 @@
-[
-  {
-    "id": "basics",
-    "title": "Основи (Basics)",
-    "file": "data/basics.json",
-    "count": 5
-  },
-  {
-    "id": "food",
-    "title": "Їжа (Food)",
-    "file": "data/food.json",
-    "count": 5
-  }
-]
+[]
