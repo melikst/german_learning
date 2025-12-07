@@ -17,37 +17,40 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                // Cache hit - return response
-                if (response) {
+    // Network First strategy for data files and admin
+    if (event.request.url.includes('/data/') || event.request.url.includes('admin')) {
+        event.respondWith(
+            fetch(event.request)
+                .then((response) => {
+                    // Update cache with new version
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, responseToCache);
+                    });
                     return response;
-                }
-                // Clone the request
-                const fetchRequest = event.request.clone();
-
-                return fetch(fetchRequest).then(
-                    (response) => {
-                        // Check if we received a valid response
+                })
+                .catch(() => {
+                    // Fallback to cache if offline
+                    return caches.match(event.request);
+                })
+        );
+    } else {
+        // Cache First for other assets (images, css, js)
+        event.respondWith(
+            caches.match(event.request)
+                .then((response) => {
+                    if (response) return response;
+                    return fetch(event.request).then((response) => {
                         if (!response || response.status !== 200 || response.type !== 'basic') {
                             return response;
                         }
-
-                        // Clone the response
                         const responseToCache = response.clone();
-
-                        caches.open(CACHE_NAME)
-                            .then((cache) => {
-                                // Don't cache admin pages or other external resources if any
-                                if (event.request.url.indexOf('admin') === -1) {
-                                    cache.put(event.request, responseToCache);
-                                }
-                            });
-
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(event.request, responseToCache);
+                        });
                         return response;
-                    }
-                );
-            })
-    );
+                    });
+                })
+        );
+    }
 });

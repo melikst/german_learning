@@ -49,7 +49,8 @@ const DeckManager = {
 
   async loadTopics() {
     try {
-      const response = await fetch('data/topics.json');
+      const t = Date.now();
+      const response = await fetch(`data/topics.json?t=${t}`);
       this.topics = await response.json();
       return this.topics;
     } catch (e) {
@@ -60,7 +61,8 @@ const DeckManager = {
 
   async loadDeck(file) {
     try {
-      const response = await fetch(file);
+      const t = Date.now();
+      const response = await fetch(`${file}?t=${t}`);
       const data = await response.json();
       // Shuffle deck for variety
       this.currentDeck = this.shuffle(data);
