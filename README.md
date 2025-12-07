@@ -1,10 +1,10 @@
 # 🇩🇪 German Learning App
 
-A fully autonomous, offline-capable flashcard application for learning German with Ukrainian translations.
+A fully autonomous, offline-capable flashcard application for learning German with Ukrainian translations. **Made specially for my brother Arthur.**
 
 ## Features
 
-- **Anki-style Flashcards**: Flip cards to reveal translations
+- **Flashcards**: Flip cards to reveal translations
 - **Text-to-Speech**: Native German pronunciation using Web Speech API
 - **Offline Support**: Works without internet after first load
 - **Dark Mode**: Automatic theme based on system preference
