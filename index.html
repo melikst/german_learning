@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Вивчення Німецької</title>
     <meta name="description" content="Безкоштовний додаток для вивчення німецької мови з картками Anki">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#f5f5f7">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 </head>
+
 <body>
     <header>
-        <h1>Deutsch Lernen</h1>
+        <h1>🇩🇪 Deutsch Lernen</h1>
     </header>
 
     <main id="app">
         <!-- Home View: Topic List -->
         <div id="home-view" class="view">
             <div id="topic-list" class="topic-list">
-                <!-- Topics will be injected here -->
                 <div class="loading">Завантаження тем...</div>
             </div>
         </div>
 
         <!-- Study View: Flashcards -->
         <div id="study-view" class="view hidden">
-            <div class="study-header" style="margin-bottom: 1rem; width: 100%; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div class="study-header">
                 <button class="nav-back" onclick="UI.showHome()">← Назад</button>
-                <h2 id="study-topic-title" style="font-size: 1.1rem; font-weight: 500;">Topic</h2>
+                <h2 id="study-topic-title">Topic</h2>
             </div>
 
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+            </div>
+
+            <!-- Flashcard -->
             <div class="flashcard-container">
                 <div id="flashcard" class="flashcard">
                     <div class="card-face card-front">
@@ -42,9 +50,10 @@
                 </div>
             </div>
 
+            <!-- Controls -->
             <div class="controls">
-                <button id="next-btn" class="btn btn-primary hidden">Далі</button>
-                <button id="restart-btn" class="btn hidden">Почати знову</button>
+                <button id="next-btn" class="btn btn-primary hidden">Далі →</button>
+                <button id="restart-btn" class="btn hidden">🔄 Почати знову</button>
             </div>
         </div>
     </main>
@@ -60,4 +69,5 @@
         }
     </script>
 </body>
+
 </html>

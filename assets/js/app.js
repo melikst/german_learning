@@ -17,9 +17,9 @@ const TTS = {
     const voices = speechSynthesis.getVoices();
     // Priority: Google Deutsch -> Any 'de-DE' -> Any 'de'
     this.voice = voices.find(v => v.name.includes('Google') && v.lang.startsWith('de')) ||
-                 voices.find(v => v.lang === 'de-DE') ||
-                 voices.find(v => v.lang.startsWith('de'));
-    
+      voices.find(v => v.lang === 'de-DE') ||
+      voices.find(v => v.lang.startsWith('de'));
+
     if (!this.voice) {
       console.warn('No German voice found. TTS may not work as expected.');
     } else {
@@ -30,7 +30,7 @@ const TTS = {
     if (!text) return;
     // Cancel any current speech
     speechSynthesis.cancel();
-    
+
     const utterance = new SpeechSynthesisUtterance(text);
     if (this.voice) {
       utterance.voice = this.voice;
@@ -46,7 +46,7 @@ const DeckManager = {
   topics: [],
   currentDeck: [],
   currentIndex: 0,
-  
+
   async loadTopics() {
     try {
       const response = await fetch('data/topics.json');
@@ -57,7 +57,7 @@ const DeckManager = {
       return [];
     }
   },
-  
+
   async loadDeck(file) {
     try {
       const response = await fetch(file);
@@ -71,7 +71,7 @@ const DeckManager = {
       return [];
     }
   },
-  
+
   shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -79,11 +79,11 @@ const DeckManager = {
     }
     return array;
   },
-  
+
   getCurrentCard() {
     return this.currentDeck[this.currentIndex];
   },
-  
+
   nextCard() {
     if (this.currentIndex < this.currentDeck.length - 1) {
       this.currentIndex++;
@@ -109,9 +109,10 @@ const UI = {
     cardBack: document.querySelector('.card-back'),
     topicTitle: document.getElementById('study-topic-title'),
     nextBtn: document.getElementById('next-btn'),
-    restartBtn: document.getElementById('restart-btn')
+    restartBtn: document.getElementById('restart-btn'),
+    progressFill: document.getElementById('progress-fill')
   },
-  
+
   init() {
     // Event Listeners
     this.elements.flashcard.addEventListener('click', () => this.flipCard());
@@ -123,7 +124,7 @@ const UI = {
       e.stopPropagation();
       this.restartDeck();
     });
-    
+
     // Handle browser back button
     window.addEventListener('popstate', (e) => {
       if (e.state && e.state.view === 'study') {
@@ -133,7 +134,7 @@ const UI = {
       }
     });
   },
-  
+
   renderTopics(topics) {
     this.elements.topicList.innerHTML = '';
     topics.forEach(topic => {
@@ -149,38 +150,54 @@ const UI = {
       this.elements.topicList.appendChild(card);
     });
   },
-  
+
   showHome(pushState = true) {
     this.elements.homeView.classList.remove('hidden');
     this.elements.studyView.classList.add('hidden');
     if (pushState) history.pushState({ view: 'home' }, '', '#');
   },
-  
+
   showStudyMode(topic, pushState = true) {
     this.elements.homeView.classList.add('hidden');
     this.elements.studyView.classList.remove('hidden');
     this.elements.topicTitle.textContent = topic.title;
     if (pushState) history.pushState({ view: 'study', topicId: topic.id }, '', `#${topic.id}`);
-    
+
     this.showCard(DeckManager.getCurrentCard());
   },
-  
+
   showCard(card) {
     if (!card) return;
-    
+
     // Reset state
     this.elements.flashcard.classList.remove('flipped');
-    
+
     // Update content
-    // Wait for flip back animation if needed, but for new card instant update is fine
     setTimeout(() => {
-      this.elements.cardFront.textContent = card.de;
-      
+      // Determine text size class based on length
+      const isLongDE = card.de.length > 40;
+      const isLongUK = card.uk.length > 40;
+
+      // Front content with adaptive class
+      this.elements.cardFront.innerHTML = '';
+      const frontContent = document.createElement('div');
+      frontContent.className = 'card-front-content';
+      if (isLongDE) {
+        frontContent.classList.add('long');
+      } else if (card.de.length <= 15) {
+        frontContent.classList.add('short');
+      }
+      frontContent.textContent = card.de;
+      this.elements.cardFront.appendChild(frontContent);
+
       // Back content
       const translation = document.createElement('div');
       translation.className = 'translation';
+      if (isLongUK) {
+        translation.classList.add('long');
+      }
       translation.textContent = card.uk;
-      
+
       const audioBtn = document.createElement('button');
       audioBtn.className = 'audio-btn';
       audioBtn.innerHTML = `
@@ -192,27 +209,31 @@ const UI = {
         e.stopPropagation();
         TTS.speak(card.de);
       });
-      
+
       this.elements.cardBack.innerHTML = '';
       this.elements.cardBack.appendChild(translation);
       this.elements.cardBack.appendChild(audioBtn);
-      
+
+      // Update progress bar
+      const progress = ((DeckManager.currentIndex + 1) / DeckManager.currentDeck.length) * 100;
+      this.elements.progressFill.style.width = `${progress}%`;
+
       // Controls
       this.elements.nextBtn.classList.add('hidden');
       this.elements.restartBtn.classList.add('hidden');
     }, 200);
   },
-  
+
   flipCard() {
     const card = this.elements.flashcard;
     const isFlipped = card.classList.contains('flipped');
-    
+
     if (!isFlipped) {
       card.classList.add('flipped');
       // Auto play audio on flip
       const currentCard = DeckManager.getCurrentCard();
       TTS.speak(currentCard.de);
-      
+
       // Show Next button
       if (DeckManager.currentIndex < DeckManager.currentDeck.length - 1) {
         this.elements.nextBtn.classList.remove('hidden');
@@ -225,7 +246,7 @@ const UI = {
       card.classList.remove('flipped');
     }
   },
-  
+
   nextCard() {
     if (DeckManager.nextCard()) {
       this.showCard(DeckManager.getCurrentCard());
@@ -243,10 +264,10 @@ const App = {
   async init() {
     TTS.init();
     UI.init();
-    
+
     const topics = await DeckManager.loadTopics();
     UI.renderTopics(topics);
-    
+
     // Check URL for direct link
     const hash = window.location.hash.slice(1);
     if (hash) {
@@ -256,7 +277,7 @@ const App = {
       }
     }
   },
-  
+
   async startTopic(topic) {
     await DeckManager.loadDeck(topic.file);
     UI.showStudyMode(topic);
