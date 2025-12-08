@@ -1,7 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     // UI Elements
     const els = {
-        topicSelect: document.getElementById('topic-select'),
+        topicTrigger: document.getElementById('topic-trigger'),
+        currentTopicName: document.getElementById('current-topic-name'),
+        modal: document.getElementById('topics-modal'),
+        closeModal: document.getElementById('close-modal'),
+        topicsList: document.getElementById('topics-list'),
+        
         gameArea: document.getElementById('game-area'),
         flashcard: document.getElementById('flashcard'),
         wordDe: document.getElementById('word-de'),
@@ -23,27 +28,46 @@ document.addEventListener('DOMContentLoaded', () => {
         voices: []
     };
 
-    // 1. Инициализация
+    // 1. Инициализация и Меню
     fetch('data/topics.json')
         .then(res => {
             if(!res.ok) throw new Error('Failed to load topics');
             return res.json();
         })
         .then(topics => {
+            // Создаем кнопки для каждой темы в модальном окне
             topics.forEach(topic => {
-                const opt = document.createElement('option');
-                opt.value = topic.file;
-                opt.textContent = topic.name;
-                els.topicSelect.appendChild(opt);
+                const btn = document.createElement('button');
+                btn.className = 'topic-item';
+                btn.textContent = topic.name;
+                btn.onclick = () => {
+                    loadTopic(topic.file, topic.name);
+                    closeModal();
+                };
+                els.topicsList.appendChild(btn);
             });
         })
         .catch(err => showError(err.message));
 
-    els.topicSelect.addEventListener('change', (e) => loadTopic(e.target.value));
+    // Управление модальным окном
+    els.topicTrigger.addEventListener('click', openModal);
+    els.closeModal.addEventListener('click', closeModal);
+    els.modal.addEventListener('click', (e) => {
+        if(e.target === els.modal) closeModal();
+    });
 
-    function loadTopic(filename) {
+    function openModal() {
+        els.modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+        els.modal.classList.add('hidden');
+    }
+
+    function loadTopic(filename, topicName) {
         showLoading(true);
         els.gameArea.classList.add('hidden');
+        els.currentTopicName.textContent = topicName;
         
         const path = filename.startsWith('data/') ? filename : `data/${filename}`;
 
@@ -68,20 +92,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Логика карточек
     function updateCard() {
+        if (!state.data.length) return;
         const item = state.data[state.currentIndex];
         
         els.flashcard.classList.remove('flipped');
         
-        // Малая задержка для плавности, если карточка была перевернута
         setTimeout(() => {
             els.wordDe.textContent = item.de;
             els.wordUk.textContent = item.uk;
             
-            // Адаптивный размер текста
+            // Адаптивный размер
             resizeText(els.wordDe, item.de);
             resizeText(els.wordUk, item.uk);
 
-            // Обновление UI
+            // UI обновления
             els.counter.textContent = `${state.currentIndex + 1} / ${state.data.length}`;
             const progress = ((state.currentIndex + 1) / state.data.length) * 100;
             els.progressFill.style.width = `${progress}%`;
@@ -91,9 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 200);
     }
 
-    // Функция для уменьшения шрифта, если текст длинный
     function resizeText(element, text) {
-        element.className = 'word-text'; // Сброс классов
+        element.className = 'word-text'; 
         if (text.length > 25) {
             element.classList.add('very-long');
         } else if (text.length > 12) {
@@ -121,7 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     els.shuffleBtn.addEventListener('click', () => {
-        // Тасование Фишера-Йетса
         for (let i = state.data.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [state.data[i], state.data[j]] = [state.data[j], state.data[i]];
@@ -151,18 +173,16 @@ document.addEventListener('DOMContentLoaded', () => {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'de-DE';
-        utterance.rate = 0.85; // Немного замедленно для четкости
+        utterance.rate = 0.85; 
 
-        // Приоритет голосов Google (они качественные)
+        // Ищем голос Google или любой немецкий
         const preferredVoice = state.voices.find(v => v.name.includes('Google Deutsch')) 
-                            || state.voices.find(v => v.lang === 'de-DE');
+                            || state.voices.find(v => v.lang.includes('de'));
         
         if (preferredVoice) utterance.voice = preferredVoice;
 
         utterance.onerror = (e) => {
-            console.warn('Audio error:', e);
             if(e.error !== 'interrupted' && e.error !== 'canceled') {
-                // Если не сработало, пробуем без указания голоса (системный дефолт)
                 const fallback = new SpeechSynthesisUtterance(text);
                 fallback.lang = 'de-DE';
                 window.speechSynthesis.speak(fallback);
