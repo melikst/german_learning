@@ -28,15 +28,32 @@ const TTS = {
   },
   speak(text) {
     if (!text) return;
-    // Cancel any current speech
+
+    // iOS Fix: Cancel before speaking
     speechSynthesis.cancel();
 
+    // iOS Fix: Re-check voices if missing (sometimes getVoices() is empty initially)
+    if (!this.voice) {
+      this.loadVoices();
+    }
+
     const utterance = new SpeechSynthesisUtterance(text);
+
+    // iOS Fix: Only set voice if we actually found one, otherwise rely on lang
     if (this.voice) {
       utterance.voice = this.voice;
     }
+
     utterance.lang = 'de-DE';
-    utterance.rate = 0.9; // Slightly slower for learning
+    utterance.rate = 0.9;
+    // iOS Fix: Explicit volume
+    utterance.volume = 1.0;
+
+    // iOS Fix: Handle errors
+    utterance.onerror = (e) => {
+      console.error('TTS Error:', e);
+    };
+
     speechSynthesis.speak(utterance);
   }
 };
