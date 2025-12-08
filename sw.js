@@ -26,7 +26,6 @@ self.addEventListener('fetch', (e) => {
     e.respondWith(
         caches.match(e.request).then(cached => {
             return cached || fetch(e.request).then(response => {
-                // Кешируем динамически (например, JSON файлы тем)
                 if (e.request.url.startsWith('http') && e.request.method === 'GET') {
                     return caches.open(CACHE_NAME).then(cache => {
                         cache.put(e.request, response.clone());
