@@ -70,6 +70,12 @@ select {
     cursor: pointer;
     transition: transform 0.2s;
 }
+
+select option {
+    background-color: #ffffff;
+    color: #000000;
+}
+
 select:active { transform: scale(0.98); }
 .select-icon {
     position: absolute;
