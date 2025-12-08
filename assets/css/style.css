@@ -10,7 +10,10 @@
     --shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { 
+    box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent; 
+}
 
 body {
     font-family: 'Nunito', sans-serif;
@@ -24,6 +27,7 @@ body {
     color: var(--text-main);
 }
 
+/* --- Фоновая анимация --- */
 .bg-shape {
     position: fixed;
     border-radius: 50%;
@@ -52,12 +56,16 @@ body {
 header { width: 100%; text-align: center; margin-bottom: 25px; }
 h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
-/* --- НОВОЕ: Кнопка открытия меню --- */
+/* --- ИСПРАВЛЕНИЕ: Кнопка выбора темы --- */
 .topic-trigger-btn {
     width: 100%;
     padding: 16px 20px;
-    background: #ffffff;
-    color: #2d3436;
+    
+    /* Принудительно задаем цвета и запрещаем темную тему для этого элемента */
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    color-scheme: only light !important; 
+    
     border: 2px solid rgba(255,255,255,0.4);
     border-radius: 16px;
     font-family: inherit;
@@ -69,11 +77,15 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
     align-items: center;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transition: transform 0.2s;
+    text-shadow: none !important; /* Убирает тень, если она делает текст белым */
 }
-.topic-trigger-btn:active { transform: scale(0.98); }
-.chevron { color: var(--primary); font-size: 0.8rem; }
 
-/* --- НОВОЕ: Модальное окно (вместо Select) --- */
+.topic-trigger-btn:active { transform: scale(0.98); }
+
+/* Стрелочка всегда темная */
+.chevron { color: #6c5ce7 !important; font-size: 0.8rem; font-weight: bold; }
+
+/* --- ИСПРАВЛЕНИЕ: Модальное окно --- */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -82,14 +94,19 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
     z-index: 1000;
     display: flex;
     justify-content: center;
-    align-items: flex-end; /* Меню снизу как на iPhone */
+    align-items: flex-end;
 }
 .modal-overlay.hidden { display: none; }
 
 .modal-content {
     width: 100%;
     max-width: 500px;
-    background: #ffffff;
+    
+    /* Белый фон модального окна */
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    color-scheme: only light !important;
+    
     border-radius: 24px 24px 0 0;
     padding: 25px;
     max-height: 80vh;
@@ -105,14 +122,18 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #eee;
     padding-bottom: 15px;
 }
-.modal-header h2 { margin: 0; font-size: 1.2rem; color: #2d3436; }
+.modal-header h2 { 
+    margin: 0; 
+    font-size: 1.2rem; 
+    color: #000000 !important; /* Черный заголовок */
+}
 
 .close-btn {
     background: none; border: none; font-size: 2rem;
-    color: var(--text-light); cursor: pointer; line-height: 1; padding: 0 10px;
+    color: #636e72; cursor: pointer; line-height: 1; padding: 0 10px;
 }
 
 .topics-list {
@@ -122,24 +143,33 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
     gap: 10px;
 }
 
+/* --- ИСПРАВЛЕНИЕ: Элементы списка тем --- */
 .topic-item {
-    background: #f8f9fa;
-    border: none;
+    /* Светло-серый фон для контраста */
+    background-color: #f2f4f6 !important;
+    color: #000000 !important;
+    
+    border: 1px solid #e0e0e0;
     padding: 16px;
     border-radius: 12px;
     text-align: left;
     font-size: 1rem;
-    font-weight: 600;
-    color: #2d3436;
+    font-weight: 700;
     cursor: pointer;
     transition: background 0.2s;
     width: 100%;
+    
+    /* Запрет инверсии цветов */
+    color-scheme: only light !important;
 }
-.topic-item:hover, .topic-item:active { background: #e0e0e0; }
+
+.topic-item:hover, .topic-item:active { 
+    background-color: #e0e0e0 !important; 
+}
 
 .hidden { display: none !important; }
 
-/* Карточка */
+/* --- Карточка --- */
 .flashcard-container {
     perspective: 1500px;
     width: 100%;
@@ -168,7 +198,11 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
     height: 100%;
     backface-visibility: hidden;
     border-radius: var(--radius);
-    background: var(--card-bg);
+    
+    /* Карточка всегда белая */
+    background-color: #ffffff !important;
+    color: #2d3436 !important;
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -178,7 +212,12 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
     border: 1px solid rgba(255,255,255,0.6);
 }
 
-.back { transform: rotateY(180deg); background: #fff0f0; color: var(--primary); border-color: #ffcccc; }
+.back { 
+    transform: rotateY(180deg); 
+    background-color: #fff5f5 !important; 
+    color: var(--primary) !important; 
+    border-color: #ffcccc; 
+}
 
 .content-wrapper {
     flex: 1;
@@ -192,11 +231,15 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
 }
 .content-wrapper::-webkit-scrollbar { display: none; }
 
-.word-text { font-weight: 800; line-height: 1.25; font-size: 2.5rem; word-break: break-word; }
+.word-text { font-weight: 800; line-height: 1.25; font-size: 2.5rem; word-break: break-word; color: #000000; }
 .word-text.long { font-size: 1.8rem; }
 .word-text.very-long { font-size: 1.3rem; }
 
-.tap-hint { position: absolute; bottom: 20px; font-size: 0.85rem; color: var(--text-light); opacity: 0.7; font-weight: 600; }
+.tap-hint { 
+    position: absolute; bottom: 20px; font-size: 0.85rem; 
+    color: #999999 !important; 
+    opacity: 0.8; font-weight: 600; 
+}
 
 /* Audio Button */
 .audio-btn {
@@ -218,7 +261,7 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
 /* Controls */
 .controls-panel {
     width: 100%;
-    background: var(--card-bg);
+    background: #ffffff !important;
     border-radius: 20px;
     padding: 15px;
     display: flex;
@@ -229,7 +272,7 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
 }
 
 .icon-btn {
-    background: transparent; border: none; font-size: 1.4rem; color: var(--text-main);
+    background: transparent; border: none; font-size: 1.4rem; color: #2d3436 !important;
     width: 44px; height: 44px; border-radius: 12px;
     cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; font-weight: 700;
 }
@@ -237,7 +280,7 @@ h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-s
 .icon-btn:disabled { opacity: 0.3; cursor: default; }
 
 .progress-indicator { flex: 1; margin: 0 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-#counter { font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; color: var(--text-light); }
+#counter { font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; color: #636e72 !important; }
 .progress-bar { width: 100%; height: 8px; background: #dfe6e9; border-radius: 4px; overflow: hidden; }
 .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s cubic-bezier(0.4, 0.2, 0.2, 1); }
 
