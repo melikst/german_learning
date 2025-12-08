@@ -1,4 +1,54 @@
 /**
+ * German Learning App
+ * Core Logic
+ */
+
+// --- TTS Module ---
+const TTS = {
+  audio: null,
+
+  init() {
+    // No initialization needed for Google TTS URL method
+  },
+
+  speak(text) {
+    if (!text) return;
+
+    // Stop any current playback
+    if (this.audio) {
+      this.audio.pause();
+      this.audio = null;
+    }
+
+    // Google Translate TTS (Online Only)
+    this.playGoogleTTS(text);
+  },
+
+  playGoogleTTS(text) {
+    try {
+      // Unofficial Google Translate TTS endpoint
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=de&client=tw-ob`;
+      this.audio = new Audio(url);
+
+      this.audio.onerror = (e) => {
+        console.error('Google TTS failed to load audio:', e);
+        alert('Error: Could not load audio from Google. Check internet connection.');
+      };
+
+      this.audio.play().catch(e => {
+        console.error('Google TTS playback error:', e);
+        // Auto-play policy might block this if not triggered by user interaction
+        alert('Audio playback blocked or failed. Tap to try again.');
+      });
+    } catch (e) {
+      console.error('Google TTS critical error:', e);
+      alert('Critical Audio Error: ' + e.message);
+    }
+  }
+};
+
+// --- Deck Manager ---
+const DeckManager = {
   topics: [],
   currentDeck: [],
   currentIndex: 0,
