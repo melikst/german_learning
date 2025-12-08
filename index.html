@@ -1,63 +1,57 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Учим Немецкий 🇩🇪</title>
+    <title>Вивчення Німецької</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2c3e50">
 </head>
 <body>
+    <div class="app-container">
+        <header>
+            <h1>Deutsch Lernen</h1>
+            <select id="topic-select">
+                <option value="" disabled selected>Оберіть тему...</option>
+            </select>
+        </header>
 
-    <header>
-        <h1>🇩🇪 Deutsch Lernen</h1>
-        <button id="theme-toggle">🌙</button>
-    </header>
-
-    <main id="app">
-        <!-- Экран выбора темы -->
-        <div id="topics-screen" class="screen active">
-            <h2>Выберите тему:</h2>
-            <div id="topics-list" class="grid-container">
-                <div class="loader">Загрузка тем...</div>
-            </div>
-        </div>
-
-        <!-- Экран карточек -->
-        <div id="game-screen" class="screen hidden">
-            <div class="top-bar">
-                <button id="back-btn">← Назад</button>
-                <span id="progress-text">0 / 0</span>
-            </div>
-
+        <main id="game-area" class="hidden">
             <div class="flashcard-container">
                 <div class="flashcard" id="flashcard">
                     <div class="front">
-                        <h2 id="word-de">Bereit?</h2>
-                        <p class="hint">(Нажми, чтобы перевернуть)</p>
+                        <span id="word-de">Hallo</span>
+                        <button class="audio-btn" id="play-audio" aria-label="Прослухати">
+                            🔊
+                        </button>
                     </div>
                     <div class="back">
-                        <h2 id="word-uk">Готовий?</h2>
+                        <span id="word-uk">Привіт</span>
                     </div>
                 </div>
             </div>
 
             <div class="controls">
-                <button id="prev-btn" class="nav-btn">❮</button>
-                <button id="speak-btn" class="action-btn">🔊 Слушать</button>
-                <button id="next-btn" class="nav-btn">❯</button>
+                <button id="prev-btn" class="nav-btn">← Назад</button>
+                <span id="counter">1 / 10</span>
+                <button id="next-btn" class="nav-btn">Далі →</button>
             </div>
-        </div>
-    </main>
+            
+            <button id="shuffle-btn" class="action-btn">🔀 Перемішати</button>
+        </main>
 
-    <script src="assets/js/script.js"></script>
+        <div id="loading" class="hidden">Завантаження...</div>
+        <div id="error-msg" class="hidden"></div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
     <script>
-        // Регистрация Service Worker для офлайн работы
+        // Реєстрація Service Worker для роботи PWA
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('Service Worker Registered'))
-                .catch(err => console.error('SW Error:', err));
+                .then(reg => console.log('Service Worker зареєстровано'))
+                .catch(err => console.error('Помилка Service Worker:', err));
         }
     </script>
 </body>
