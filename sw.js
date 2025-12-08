@@ -1,74 +1,49 @@
-const CACHE_NAME = 'german-learning-v4';
-const ASSETS = [
+const CACHE_NAME = 'german-learning-v2';
+const ASSETS_TO_CACHE = [
     './',
     './index.html',
     './assets/css/style.css',
     './assets/js/app.js',
     './data/topics.json',
-    './data/basics.json',
-    './data/food.json'
+    './manifest.json'
+    // Ми не кешуємо всі JSON файли одразу, вони додадуться динамічно при відкритті
 ];
 
 self.addEventListener('install', (event) => {
-    self.skipWaiting(); // Force new SW to activate immediately
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then((cache) => cache.addAll(ASSETS))
+            .then((cache) => cache.addAll(ASSETS_TO_CACHE))
     );
 });
 
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        Promise.all([
-            self.clients.claim(), // Take control of all clients immediately
-            caches.keys().then((keys) => {
-                return Promise.all(
-                    keys.map((key) => {
-                        if (key !== CACHE_NAME) {
-                            return caches.delete(key);
-                        }
-                    })
-                );
-            })
-        ])
+        caches.keys().then((keys) => {
+            return Promise.all(
+                keys.map((key) => {
+                    if (key !== CACHE_NAME) {
+                        return caches.delete(key);
+                    }
+                })
+            );
+        })
     );
 });
 
 self.addEventListener('fetch', (event) => {
-    // Network First strategy for data files and admin
-    if (event.request.url.includes('/data/') || event.request.url.includes('admin')) {
-        event.respondWith(
-            fetch(event.request)
-                .then((response) => {
-                    // Update cache with new version
-                    const responseToCache = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseToCache);
-                    });
-                    return response;
-                })
-                .catch(() => {
-                    // Fallback to cache if offline
-                    return caches.match(event.request);
-                })
-        );
-    } else {
-        // Cache First for other assets (images, css, js)
-        event.respondWith(
-            caches.match(event.request)
-                .then((response) => {
-                    if (response) return response;
-                    return fetch(event.request).then((response) => {
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
-                            return response;
+    event.respondWith(
+        caches.match(event.request)
+            .then((response) => {
+                return response || fetch(event.request).then((fetchResponse) => {
+                    // Кешуємо нові запити (наприклад, файли тем data/food.json)
+                    return caches.open(CACHE_NAME).then((cache) => {
+                        // Перевіряємо, чи валідний запит (тільки http/https)
+                        if (event.request.url.startsWith('http')) {
+                            cache.put(event.request, fetchResponse.clone());
                         }
-                        const responseToCache = response.clone();
-                        caches.open(CACHE_NAME).then((cache) => {
-                            cache.put(event.request, responseToCache);
-                        });
-                        return response;
+                        return fetchResponse;
                     });
-                })
-        );
-    }
+                });
+            })
+    );
 });
