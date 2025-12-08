@@ -1,73 +1,64 @@
 <!DOCTYPE html>
-<html lang="uk">
-
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Deutsch Lernen - Для брата Артура</title>
-    <meta name="description" content="Додаток для вивчення німецької мови. Зроблено спеціально для брата Артура.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учим Немецкий 🇩🇪</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0a0a0f">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+    <meta name="theme-color" content="#2c3e50">
 </head>
-
 <body>
+
     <header>
         <h1>🇩🇪 Deutsch Lernen</h1>
+        <button id="theme-toggle">🌙</button>
     </header>
 
     <main id="app">
-        <!-- Home View: Topic List -->
-        <div id="home-view" class="view">
-            <div id="topic-list" class="topic-list">
-                <div class="loading">Завантаження тем...</div>
+        <!-- Экран выбора темы -->
+        <div id="topics-screen" class="screen active">
+            <h2>Выберите тему:</h2>
+            <div id="topics-list" class="grid-container">
+                <div class="loader">Загрузка тем...</div>
             </div>
         </div>
 
-        <!-- Study View: Flashcards -->
-        <div id="study-view" class="view hidden">
-            <div class="study-header">
-                <button class="nav-back" onclick="UI.showHome()">← Назад</button>
-                <h2 id="study-topic-title">Topic</h2>
+        <!-- Экран карточек -->
+        <div id="game-screen" class="screen hidden">
+            <div class="top-bar">
+                <button id="back-btn">← Назад</button>
+                <span id="progress-text">0 / 0</span>
             </div>
 
-            <!-- Progress Bar -->
-            <div class="progress-bar">
-                <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
-            </div>
-
-            <!-- Flashcard -->
             <div class="flashcard-container">
-                <div id="flashcard" class="flashcard">
-                    <div class="card-face card-front">
-                        <!-- German Word -->
+                <div class="flashcard" id="flashcard">
+                    <div class="front">
+                        <h2 id="word-de">Bereit?</h2>
+                        <p class="hint">(Нажми, чтобы перевернуть)</p>
                     </div>
-                    <div class="card-face card-back">
-                        <!-- Ukrainian Translation + Audio -->
+                    <div class="back">
+                        <h2 id="word-uk">Готовий?</h2>
                     </div>
                 </div>
             </div>
 
-            <!-- Controls -->
             <div class="controls">
-                <button id="next-btn" class="btn btn-primary hidden">Далі →</button>
-                <button id="restart-btn" class="btn hidden">🔄 Почати знову</button>
+                <button id="prev-btn" class="nav-btn">❮</button>
+                <button id="speak-btn" class="action-btn">🔊 Слушать</button>
+                <button id="next-btn" class="nav-btn">❯</button>
             </div>
         </div>
     </main>
 
-    <script src="assets/js/app.js?v=4"></script>
+    <script src="assets/js/script.js"></script>
     <script>
+        // Регистрация Service Worker для офлайн работы
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('SW registered'))
-                    .catch(err => console.log('SW registration failed', err));
-            });
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('Service Worker Registered'))
+                .catch(err => console.error('SW Error:', err));
         }
     </script>
 </body>
-
 </html>
