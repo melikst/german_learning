@@ -12,19 +12,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Фоновые элементы -->
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
 
     <div class="app-container">
         <header>
             <h1>🇩🇪 Deutsch Lernen</h1>
-            <div class="select-wrapper">
-                <select id="topic-select">
-                    <option value="" disabled selected>Оберіть тему уроку...</option>
-                </select>
-                <div class="select-icon">▼</div>
-            </div>
+            <!-- Новая кнопка вместо Select -->
+            <button id="topic-trigger" class="topic-trigger-btn">
+                <span id="current-topic-name">📂 Оберіть тему уроку...</span>
+                <span class="chevron">▼</span>
+            </button>
         </header>
 
         <main id="game-area" class="hidden">
@@ -54,18 +52,14 @@
             </div>
 
             <div class="controls-panel">
-                <button id="prev-btn" class="icon-btn" aria-label="Назад">
-                    ←
-                </button>
+                <button id="prev-btn" class="icon-btn" aria-label="Назад">←</button>
                 <div class="progress-indicator">
-                    <span id="counter">1 / 10</span>
+                    <span id="counter">0 / 0</span>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progress-fill"></div>
                     </div>
                 </div>
-                <button id="next-btn" class="icon-btn" aria-label="Далі">
-                    →
-                </button>
+                <button id="next-btn" class="icon-btn" aria-label="Далі">→</button>
             </div>
             
             <button id="shuffle-btn" class="action-btn">
@@ -77,6 +71,19 @@
             <div class="spinner"></div> Завантаження...
         </div>
         <div id="error-msg" class="state-msg error hidden"></div>
+    </div>
+
+    <!-- Модальное окно выбора темы -->
+    <div id="topics-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Оберіть тему</h2>
+                <button id="close-modal" class="close-btn">×</button>
+            </div>
+            <div id="topics-list" class="topics-list">
+                <!-- Сюда JS добавит кнопки тем -->
+            </div>
+        </div>
     </div>
 
     <script src="assets/js/app.js"></script>
