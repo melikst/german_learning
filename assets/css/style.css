@@ -10,7 +10,10 @@
     --shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { 
+    box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent; 
+}
 
 body {
     font-family: 'Nunito', sans-serif;
@@ -24,7 +27,7 @@ body {
     color: var(--text-main);
 }
 
-/* Фоновые пузыри */
+/* Фоновые плавающие фигуры */
 .bg-shape {
     position: fixed;
     border-radius: 50%;
@@ -33,8 +36,21 @@ body {
     opacity: 0.6;
     animation: float 10s infinite ease-in-out;
 }
-.shape-1 { width: 300px; height: 300px; background: #ffeaa7; top: -50px; left: -50px; }
-.shape-2 { width: 250px; height: 250px; background: #81ecec; bottom: -50px; right: -50px; animation-delay: -5s; }
+.shape-1 { 
+    width: 300px; 
+    height: 300px; 
+    background: #ffeaa7; 
+    top: -50px; 
+    left: -50px; 
+}
+.shape-2 { 
+    width: 250px; 
+    height: 250px; 
+    background: #81ecec; 
+    bottom: -50px; 
+    right: -50px; 
+    animation-delay: -5s; 
+}
 
 @keyframes float {
     0%, 100% { transform: translate(0, 0); }
@@ -50,50 +66,82 @@ body {
     align-items: center;
 }
 
-/* Header */
-header { width: 100%; text-align: center; margin-bottom: 25px; }
-h1 { color: #fff; font-size: 2rem; font-weight: 800; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+/* --- Header & Select --- */
+header { 
+    width: 100%; 
+    text-align: center; 
+    margin-bottom: 25px; 
+}
 
-.select-wrapper { position: relative; width: 100%; }
+h1 { 
+    color: #fff; 
+    font-size: 2rem; 
+    font-weight: 800; 
+    margin-bottom: 20px; 
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
+
+.select-wrapper { 
+    position: relative; 
+    width: 100%; 
+}
+
 select {
     width: 100%;
     padding: 16px;
     padding-right: 40px;
     font-size: 1rem;
     font-family: inherit;
-    border: none;
+    font-weight: 600;
+    
+    /* Стилизация рамки и фона */
+    border: 2px solid rgba(255, 255, 255, 0.4);
     border-radius: 16px;
-    background: var(--card-bg);
-    color: var(--text-main);
+    
+    /* FIX: Гарантируем белый фон и черный текст везде */
+    background-color: #ffffff;
+    color: #2d3436;
+    color-scheme: light; /* Принудительно светлая тема для системного меню */
+    
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     appearance: none;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+select:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+    border-color: #fff;
+}
+
+select:active { 
+    transform: scale(0.98); 
 }
 
 select option {
     background-color: #ffffff;
-    color: #000000;
+    color: #2d3436;
 }
 
-select:active { transform: scale(0.98); }
 .select-icon {
     position: absolute;
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    color: var(--primary);
+    color: var(--primary); /* Цвет стрелочки */
     font-size: 0.8rem;
+    z-index: 2;
 }
 
 .hidden { display: none !important; }
 
-/* Карточка */
+/* --- Карточка (3D Flashcard) --- */
 .flashcard-container {
     perspective: 1500px;
     width: 100%;
-    aspect-ratio: 4/5; /* Квадратнее для мобилок */
+    aspect-ratio: 4/5;
     max-height: 450px;
     margin-bottom: 25px;
     position: relative;
@@ -110,7 +158,9 @@ select:active { transform: scale(0.98); }
     box-shadow: var(--shadow);
 }
 
-.flashcard.flipped { transform: rotateY(180deg); }
+.flashcard.flipped { 
+    transform: rotateY(180deg); 
+}
 
 .card-face {
     position: absolute;
@@ -125,50 +175,56 @@ select:active { transform: scale(0.98); }
     align-items: center;
     padding: 20px;
     text-align: center;
-    border: 1px solid rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.6);
 }
 
-.back { transform: rotateY(180deg); background: #fff5f5; color: var(--primary); }
+.back { 
+    transform: rotateY(180deg); 
+    background: #fff0f0; 
+    color: var(--primary); 
+    border-color: #ffcccc;
+}
 
-/* Контент внутри карточки */
+/* --- Контент карточки --- */
 .content-wrapper {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-height: 70%; /* Ограничение высоты текста */
-    overflow-y: auto; /* Скролл если текст гигантский */
-    scrollbar-width: none; /* Firefox: скрыть скроллбар */
+    max-height: 75%;
+    overflow-y: auto; /* Скролл для очень длинного текста */
+    scrollbar-width: none; 
 }
-.content-wrapper::-webkit-scrollbar { display: none; /* Chrome: скрыть скроллбар */ }
+.content-wrapper::-webkit-scrollbar { display: none; }
 
 .word-text {
     font-weight: 800;
-    line-height: 1.2;
-    /* Базовый размер, JS будет менять его если текст длинный */
+    line-height: 1.25;
     font-size: 2.5rem; 
     word-break: break-word;
 }
 
+/* Адаптивные размеры шрифта (классы добавляются через JS) */
 .word-text.long { font-size: 1.8rem; }
 .word-text.very-long { font-size: 1.3rem; }
 
 .tap-hint {
     position: absolute;
     bottom: 20px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-light);
-    opacity: 0.6;
+    opacity: 0.7;
+    font-weight: 600;
 }
 
-/* Audio Button */
+/* --- Кнопка Аудио --- */
 .audio-btn {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: rgba(108, 92, 231, 0.1);
     border: none;
@@ -177,14 +233,19 @@ select:active { transform: scale(0.98); }
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 10;
 }
-.audio-btn svg { width: 20px; height: 20px; }
-.audio-btn:hover { background: var(--primary); color: #fff; transform: scale(1.1); }
-.audio-btn:active { transform: scale(0.9); }
+.audio-btn svg { width: 22px; height: 22px; }
+.audio-btn:hover { 
+    background: var(--primary); 
+    color: #fff; 
+    transform: scale(1.15) rotate(-5deg); 
+    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+}
+.audio-btn:active { transform: scale(0.95); }
 
-/* Controls */
+/* --- Панель управления --- */
 .controls-panel {
     width: 100%;
     background: var(--card-bg);
@@ -200,15 +261,23 @@ select:active { transform: scale(0.98); }
 .icon-btn {
     background: transparent;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: var(--text-main);
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 12px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
 }
-.icon-btn:hover:not(:disabled) { background: rgba(0,0,0,0.05); }
+.icon-btn:hover:not(:disabled) { 
+    background: rgba(0,0,0,0.05); 
+    transform: translateY(-2px);
+}
+.icon-btn:active:not(:disabled) { transform: translateY(0); }
 .icon-btn:disabled { opacity: 0.3; cursor: default; }
 
 .progress-indicator {
@@ -220,13 +289,18 @@ select:active { transform: scale(0.98); }
     align-items: center;
 }
 
-#counter { font-weight: 700; font-size: 0.9rem; margin-bottom: 5px; color: var(--text-light); }
+#counter { 
+    font-weight: 800; 
+    font-size: 0.95rem; 
+    margin-bottom: 6px; 
+    color: var(--text-light); 
+}
 
 .progress-bar {
     width: 100%;
-    height: 6px;
+    height: 8px;
     background: #dfe6e9;
-    border-radius: 3px;
+    border-radius: 4px;
     overflow: hidden;
 }
 
@@ -234,37 +308,51 @@ select:active { transform: scale(0.98); }
     height: 100%;
     background: var(--primary);
     width: 0%;
-    transition: width 0.3s ease;
+    transition: width 0.4s cubic-bezier(0.4, 0.2, 0.2, 1);
 }
 
+/* --- Кнопка "Перемешать" --- */
 .action-btn {
     width: 100%;
     padding: 16px;
-    background: rgba(255,255,255,0.2);
-    border: 2px solid rgba(255,255,255,0.4);
+    background: rgba(255, 255, 255, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     color: #fff;
     font-weight: 700;
     font-size: 1rem;
     border-radius: 16px;
     cursor: pointer;
     transition: all 0.2s;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
-.action-btn:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+.action-btn:hover { 
+    background: rgba(255, 255, 255, 0.35); 
+    transform: translateY(-2px); 
+}
 .action-btn:active { transform: scale(0.98); }
 
-/* Messages */
+/* --- Сообщения (Загрузка/Ошибки) --- */
 .state-msg {
     margin-top: 20px;
     background: #fff;
-    padding: 10px 20px;
+    padding: 12px 24px;
     border-radius: 50px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-light);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    animation: fadeIn 0.3s ease;
 }
-.state-msg.error { background: #ff7675; color: #fff; }
+.state-msg.error { 
+    background: #ff7675; 
+    color: #fff; 
+}
 
 .spinner {
     width: 20px;
@@ -274,4 +362,6 @@ select:active { transform: scale(0.98); }
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
+
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
