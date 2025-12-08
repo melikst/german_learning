@@ -1,191 +1,185 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Елементи DOM
-    const topicSelect = document.getElementById('topic-select');
-    const gameArea = document.getElementById('game-area');
-    const flashcard = document.getElementById('flashcard');
-    const wordDe = document.getElementById('word-de');
-    const wordUk = document.getElementById('word-uk');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const counter = document.getElementById('counter');
-    const playAudioBtn = document.getElementById('play-audio');
-    const shuffleBtn = document.getElementById('shuffle-btn');
-    const loading = document.getElementById('loading');
-    const errorMsg = document.getElementById('error-msg');
+    // UI Elements
+    const els = {
+        topicSelect: document.getElementById('topic-select'),
+        gameArea: document.getElementById('game-area'),
+        flashcard: document.getElementById('flashcard'),
+        wordDe: document.getElementById('word-de'),
+        wordUk: document.getElementById('word-uk'),
+        prevBtn: document.getElementById('prev-btn'),
+        nextBtn: document.getElementById('next-btn'),
+        counter: document.getElementById('counter'),
+        progressFill: document.getElementById('progress-fill'),
+        playAudioBtn: document.getElementById('play-audio'),
+        shuffleBtn: document.getElementById('shuffle-btn'),
+        loading: document.getElementById('loading'),
+        errorMsg: document.getElementById('error-msg')
+    };
 
-    // Стан додатка
-    let currentData = [];
-    let currentIndex = 0;
-    let voices = [];
+    // State
+    let state = {
+        data: [],
+        currentIndex: 0,
+        voices: []
+    };
 
-    // --- 1. Ініціалізація та Завантаження даних ---
-
-    // Завантаження списку тем
+    // 1. Инициализация
     fetch('data/topics.json')
-        .then(response => {
-            if (!response.ok) throw new Error('Не вдалося завантажити topics.json');
-            return response.json();
+        .then(res => {
+            if(!res.ok) throw new Error('Failed to load topics');
+            return res.json();
         })
         .then(topics => {
             topics.forEach(topic => {
-                const option = document.createElement('option');
-                option.value = topic.file; // Передбачається, що в topics.json є поле "file": "basics.json"
-                option.textContent = topic.name;
-                topicSelect.appendChild(option);
+                const opt = document.createElement('option');
+                opt.value = topic.file;
+                opt.textContent = topic.name;
+                els.topicSelect.appendChild(opt);
             });
         })
         .catch(err => showError(err.message));
 
-    // Обробка вибору теми
-    topicSelect.addEventListener('change', (e) => {
-        const file = e.target.value;
-        if (!file) return;
-        loadTopicData(file);
-    });
+    els.topicSelect.addEventListener('change', (e) => loadTopic(e.target.value));
 
-    function loadTopicData(filename) {
+    function loadTopic(filename) {
         showLoading(true);
-        gameArea.classList.add('hidden');
+        els.gameArea.classList.add('hidden');
         
-        // Перевірка шляху: якщо файл просто "basics.json", додаємо "data/"
         const path = filename.startsWith('data/') ? filename : `data/${filename}`;
 
         fetch(path)
-            .then(response => {
-                if (!response.ok) throw new Error(`Не вдалося завантажити ${filename}`);
-                return response.json();
+            .then(res => {
+                if(!res.ok) throw new Error('Failed to load words');
+                return res.json();
             })
             .then(data => {
-                if (!Array.isArray(data) || data.length === 0) {
-                    throw new Error('Файл даних порожній або має неправильний формат');
-                }
-                currentData = data;
-                currentIndex = 0;
+                if(!data.length) throw new Error('No words found');
+                state.data = data;
+                state.currentIndex = 0;
                 updateCard();
                 showLoading(false);
-                gameArea.classList.remove('hidden');
+                els.gameArea.classList.remove('hidden');
             })
             .catch(err => {
                 showLoading(false);
-                showError(`Помилка: ${err.message}`);
+                showError(err.message);
             });
     }
 
-    // --- 2. Логіка карток ---
-
+    // 2. Логика карточек
     function updateCard() {
-        if (currentData.length === 0) return;
+        const item = state.data[state.currentIndex];
         
-        const item = currentData[currentIndex];
+        els.flashcard.classList.remove('flipped');
         
-        // Скидаємо перевертання
-        flashcard.classList.remove('flipped');
-        
-        // Оновлюємо текст (з невеликою затримкою для анімації, якщо картка була перевернута)
+        // Малая задержка для плавности, если карточка была перевернута
         setTimeout(() => {
-            wordDe.textContent = item.de;
-            wordUk.textContent = item.uk;
-            counter.textContent = `${currentIndex + 1} / ${currentData.length}`;
+            els.wordDe.textContent = item.de;
+            els.wordUk.textContent = item.uk;
             
-            // Стан кнопок
-            prevBtn.disabled = currentIndex === 0;
-            nextBtn.disabled = currentIndex === currentData.length - 1;
-        }, 150);
+            // Адаптивный размер текста
+            resizeText(els.wordDe, item.de);
+            resizeText(els.wordUk, item.uk);
+
+            // Обновление UI
+            els.counter.textContent = `${state.currentIndex + 1} / ${state.data.length}`;
+            const progress = ((state.currentIndex + 1) / state.data.length) * 100;
+            els.progressFill.style.width = `${progress}%`;
+            
+            els.prevBtn.disabled = state.currentIndex === 0;
+            els.nextBtn.disabled = state.currentIndex === state.data.length - 1;
+        }, 200);
     }
 
-    flashcard.addEventListener('click', (e) => {
-        // Не перевертати, якщо натиснули на кнопку звуку
+    // Функция для уменьшения шрифта, если текст длинный
+    function resizeText(element, text) {
+        element.className = 'word-text'; // Сброс классов
+        if (text.length > 25) {
+            element.classList.add('very-long');
+        } else if (text.length > 12) {
+            element.classList.add('long');
+        }
+    }
+
+    els.flashcard.addEventListener('click', (e) => {
         if (e.target.closest('.audio-btn')) return;
-        flashcard.classList.toggle('flipped');
+        els.flashcard.classList.toggle('flipped');
     });
 
-    nextBtn.addEventListener('click', () => {
-        if (currentIndex < currentData.length - 1) {
-            currentIndex++;
+    els.nextBtn.addEventListener('click', () => {
+        if (state.currentIndex < state.data.length - 1) {
+            state.currentIndex++;
             updateCard();
         }
     });
 
-    prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) {
-            currentIndex--;
+    els.prevBtn.addEventListener('click', () => {
+        if (state.currentIndex > 0) {
+            state.currentIndex--;
             updateCard();
         }
     });
 
-    shuffleBtn.addEventListener('click', () => {
-        // Алгоритм Тасувальника Фішера-Єтса
-        for (let i = currentData.length - 1; i > 0; i--) {
+    els.shuffleBtn.addEventListener('click', () => {
+        // Тасование Фишера-Йетса
+        for (let i = state.data.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [currentData[i], currentData[j]] = [currentData[j], currentData[i]];
+            [state.data[i], state.data[j]] = [state.data[j], state.data[i]];
         }
-        currentIndex = 0;
+        state.currentIndex = 0;
         updateCard();
     });
 
-    // --- 3. ОЗВУЧКА (ВИПРАВЛЕНО) ---
-    
-    // Завантаження голосів
+    // 3. Audio (TTS)
     function loadVoices() {
-        voices = window.speechSynthesis.getVoices();
+        state.voices = window.speechSynthesis.getVoices();
     }
     
-    // Деякі браузери завантажують голоси асинхронно
     if (speechSynthesis.onvoiceschanged !== undefined) {
         speechSynthesis.onvoiceschanged = loadVoices;
     }
     loadVoices();
 
-    playAudioBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Запобігає перевертанню картки
-        const text = wordDe.textContent;
-        speakText(text);
+    els.playAudioBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        playText(els.wordDe.textContent);
     });
 
-    function speakText(text) {
-        if (!('speechSynthesis' in window)) {
-            alert('Ваш браузер не підтримує озвучення.');
-            return;
-        }
+    function playText(text) {
+        if (!window.speechSynthesis) return;
 
-        // Скасувати попереднє озвучення, якщо воно йде
         window.speechSynthesis.cancel();
-
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'de-DE'; // Встановлюємо німецьку мову
-        utterance.rate = 0.9; // Трохи повільніше для навчання
+        utterance.lang = 'de-DE';
+        utterance.rate = 0.85; // Немного замедленно для четкости
 
-        // Спроба знайти найкращий голос (Google або німецький)
-        // Ми шукаємо голоси, що містять "Google" і "de", або просто "de"
-        const germanVoice = voices.find(v => v.lang.includes('de') && v.name.includes('Google')) 
-                         || voices.find(v => v.lang.includes('de'));
-
-        if (germanVoice) {
-            utterance.voice = germanVoice;
-        }
+        // Приоритет голосов Google (они качественные)
+        const preferredVoice = state.voices.find(v => v.name.includes('Google Deutsch')) 
+                            || state.voices.find(v => v.lang === 'de-DE');
+        
+        if (preferredVoice) utterance.voice = preferredVoice;
 
         utterance.onerror = (e) => {
-            console.error('TTS Error:', e);
-            // Іноді помилка виникає, якщо занадто швидко клацати. Ігноруємо "interrupted"
-            if (e.error !== 'interrupted' && e.error !== 'canceled') {
-                showError('Помилка відтворення звуку. Спробуйте ще раз.');
+            console.warn('Audio error:', e);
+            if(e.error !== 'interrupted' && e.error !== 'canceled') {
+                // Если не сработало, пробуем без указания голоса (системный дефолт)
+                const fallback = new SpeechSynthesisUtterance(text);
+                fallback.lang = 'de-DE';
+                window.speechSynthesis.speak(fallback);
             }
         };
 
         window.speechSynthesis.speak(utterance);
     }
 
-    // --- Допоміжні функції ---
-
-    function showLoading(isLoading) {
-        loading.classList.toggle('hidden', !isLoading);
+    // Helpers
+    function showLoading(show) {
+        els.loading.classList.toggle('hidden', !show);
     }
 
     function showError(msg) {
-        errorMsg.textContent = msg;
-        errorMsg.classList.remove('hidden');
-        setTimeout(() => {
-            errorMsg.classList.add('hidden');
-        }, 5000);
+        els.errorMsg.textContent = msg;
+        els.errorMsg.classList.remove('hidden');
+        setTimeout(() => els.errorMsg.classList.add('hidden'), 4000);
     }
 });
