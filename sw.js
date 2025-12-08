@@ -1,49 +1,40 @@
-const CACHE_NAME = 'german-learning-v2';
-const ASSETS_TO_CACHE = [
+const CACHE_NAME = 'deutsch-lernen-v3';
+const ASSETS = [
     './',
     './index.html',
     './assets/css/style.css',
     './assets/js/app.js',
-    './data/topics.json',
-    './manifest.json'
-    // Ми не кешуємо всі JSON файли одразу, вони додадуться динамічно при відкритті
+    './manifest.json',
+    './data/topics.json'
 ];
 
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => cache.addAll(ASSETS_TO_CACHE))
-    );
+self.addEventListener('install', (e) => {
+    e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
 });
 
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then((keys) => {
-            return Promise.all(
-                keys.map((key) => {
-                    if (key !== CACHE_NAME) {
-                        return caches.delete(key);
-                    }
-                })
-            );
-        })
-    );
-});
-
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                return response || fetch(event.request).then((fetchResponse) => {
-                    // Кешуємо нові запити (наприклад, файли тем data/food.json)
-                    return caches.open(CACHE_NAME).then((cache) => {
-                        // Перевіряємо, чи валідний запит (тільки http/https)
-                        if (event.request.url.startsWith('http')) {
-                            cache.put(event.request, fetchResponse.clone());
-                        }
-                        return fetchResponse;
-                    });
-                });
+self.addEventListener('activate', (e) => {
+    e.waitUntil(
+        caches.keys().then(keys => Promise.all(
+            keys.map(key => {
+                if(key !== CACHE_NAME) return caches.delete(key);
             })
+        ))
+    );
+});
+
+self.addEventListener('fetch', (e) => {
+    e.respondWith(
+        caches.match(e.request).then(cached => {
+            return cached || fetch(e.request).then(response => {
+                // Кешируем динамически (например, JSON файлы тем)
+                if (e.request.url.startsWith('http') && e.request.method === 'GET') {
+                    return caches.open(CACHE_NAME).then(cache => {
+                        cache.put(e.request, response.clone());
+                        return response;
+                    });
+                }
+                return response;
+            });
+        })
     );
 });
