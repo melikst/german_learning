@@ -2,56 +2,87 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вивчення Німецької</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Deutsch Lernen</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2c3e50">
+    <meta name="theme-color" content="#6c5ce7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Фоновые элементы -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
     <div class="app-container">
         <header>
-            <h1>Deutsch Lernen</h1>
-            <select id="topic-select">
-                <option value="" disabled selected>Оберіть тему...</option>
-            </select>
+            <h1>🇩🇪 Deutsch Lernen</h1>
+            <div class="select-wrapper">
+                <select id="topic-select">
+                    <option value="" disabled selected>Оберіть тему уроку...</option>
+                </select>
+                <div class="select-icon">▼</div>
+            </div>
         </header>
 
         <main id="game-area" class="hidden">
             <div class="flashcard-container">
                 <div class="flashcard" id="flashcard">
-                    <div class="front">
-                        <span id="word-de">Hallo</span>
+                    <!-- Передняя сторона (Немецкий) -->
+                    <div class="card-face front">
+                        <div class="content-wrapper">
+                            <span id="word-de" class="word-text">Hallo</span>
+                        </div>
                         <button class="audio-btn" id="play-audio" aria-label="Прослухати">
-                            🔊
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
                         </button>
+                        <div class="tap-hint">Натисніть, щоб перекласти</div>
                     </div>
-                    <div class="back">
-                        <span id="word-uk">Привіт</span>
+                    
+                    <!-- Задняя сторона (Украинский) -->
+                    <div class="card-face back">
+                        <div class="content-wrapper">
+                            <span id="word-uk" class="word-text">Привіт</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="controls">
-                <button id="prev-btn" class="nav-btn">← Назад</button>
-                <span id="counter">1 / 10</span>
-                <button id="next-btn" class="nav-btn">Далі →</button>
+            <div class="controls-panel">
+                <button id="prev-btn" class="icon-btn" aria-label="Назад">
+                    ←
+                </button>
+                <div class="progress-indicator">
+                    <span id="counter">1 / 10</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+                <button id="next-btn" class="icon-btn" aria-label="Далі">
+                    →
+                </button>
             </div>
             
-            <button id="shuffle-btn" class="action-btn">🔀 Перемішати</button>
+            <button id="shuffle-btn" class="action-btn">
+                <span>🔀 Перемішати картки</span>
+            </button>
         </main>
 
-        <div id="loading" class="hidden">Завантаження...</div>
-        <div id="error-msg" class="hidden"></div>
+        <div id="loading" class="state-msg hidden">
+            <div class="spinner"></div> Завантаження...
+        </div>
+        <div id="error-msg" class="state-msg error hidden"></div>
     </div>
 
     <script src="assets/js/app.js"></script>
     <script>
-        // Реєстрація Service Worker для роботи PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('Service Worker зареєстровано'))
-                .catch(err => console.error('Помилка Service Worker:', err));
+            navigator.serviceWorker.register('sw.js').catch(console.error);
         }
     </script>
 </body>
