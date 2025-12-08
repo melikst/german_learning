@@ -6,53 +6,82 @@
 // --- TTS Module ---
 const TTS = {
   voice: null,
+  audio: null,
+
   init() {
-    // Attempt to load voices immediately and on change
     this.loadVoices();
     if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = () => this.loadVoices();
     }
   },
+
   loadVoices() {
     const voices = speechSynthesis.getVoices();
-    // Priority: Google Deutsch -> Any 'de-DE' -> Any 'de'
+    // Priority: Google -> Enhanced/Premium -> Standard de-DE -> Any de
+    // Explicitly try to avoid "Compact" voices on iOS if possible
     this.voice = voices.find(v => v.name.includes('Google') && v.lang.startsWith('de')) ||
-      voices.find(v => v.lang === 'de-DE') ||
+      voices.find(v => (v.name.includes('Enhanced') || v.name.includes('Premium')) && v.lang.startsWith('de')) ||
+      voices.find(v => v.lang === 'de-DE' && !v.name.includes('Compact')) ||
       voices.find(v => v.lang.startsWith('de'));
 
-    if (!this.voice) {
-      console.warn('No German voice found. TTS may not work as expected.');
-    } else {
-      console.log('Selected voice:', this.voice.name);
+    if (this.voice) {
+      console.log('Selected native voice:', this.voice.name);
     }
   },
+
   speak(text) {
     if (!text) return;
 
-    // iOS Fix: Cancel before speaking
+    // Stop any current playback
+    if (this.audio) {
+      this.audio.pause();
+      this.audio = null;
+    }
     speechSynthesis.cancel();
 
-    // iOS Fix: Re-check voices if missing (sometimes getVoices() is empty initially)
-    if (!this.voice) {
-      this.loadVoices();
+    // Strategy 1: Try Google Translate TTS (Online)
+    if (navigator.onLine) {
+      this.playGoogleTTS(text);
+    } else {
+      // Strategy 2: Native Fallback (Offline)
+      this.speakNative(text);
     }
+  },
+
+  playGoogleTTS(text) {
+    try {
+      // Unofficial Google Translate TTS endpoint
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=de&client=tw-ob`;
+      this.audio = new Audio(url);
+
+      this.audio.onerror = () => {
+        console.warn('Google TTS failed, falling back to native');
+        this.speakNative(text);
+      };
+
+      this.audio.play().catch(e => {
+        console.warn('Google TTS playback failed, falling back', e);
+        this.speakNative(text);
+      });
+    } catch (e) {
+      console.error('Google TTS error', e);
+      this.speakNative(text);
+    }
+  },
+
+  speakNative(text) {
+    if (!this.voice) this.loadVoices();
 
     const utterance = new SpeechSynthesisUtterance(text);
-
-    // iOS Fix: Only set voice if we actually found one, otherwise rely on lang
     if (this.voice) {
       utterance.voice = this.voice;
     }
 
     utterance.lang = 'de-DE';
     utterance.rate = 0.9;
-    // iOS Fix: Explicit volume
     utterance.volume = 1.0;
 
-    // iOS Fix: Handle errors
-    utterance.onerror = (e) => {
-      console.error('TTS Error:', e);
-    };
+    utterance.onerror = (e) => console.error('Native TTS Error:', e);
 
     speechSynthesis.speak(utterance);
   }
