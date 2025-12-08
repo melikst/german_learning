@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // UI Elements
+    // Елементи інтерфейсу
     const els = {
         topicTrigger: document.getElementById('topic-trigger'),
         currentTopicName: document.getElementById('current-topic-name'),
@@ -21,40 +21,62 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg: document.getElementById('error-msg')
     };
 
-    // State
+    // Стан додатка
     let state = {
         data: [],
         currentIndex: 0,
         voices: []
     };
 
-    // 1. Инициализация и Меню
+    // --- 1. ІНІЦІАЛІЗАЦІЯ ТА МЕНЮ ТЕМ ---
+    
+    // Завантаження списку тем
     fetch('data/topics.json')
         .then(res => {
-            if(!res.ok) throw new Error('Failed to load topics');
+            if(!res.ok) throw new Error('Не вдалося знайти data/topics.json');
             return res.json();
         })
         .then(topics => {
-            // Создаем кнопки для каждой темы в модальном окне
+            // Очищення списку перед додаванням
+            els.topicsList.innerHTML = '';
+
+            if (!Array.isArray(topics)) {
+                throw new Error('Неправильний формат topics.json (очікується масив)');
+            }
+
             topics.forEach(topic => {
+                // АДАПТАЦІЯ ПІД ВАШ JSON: використовуємо topic.title
+                const topicName = topic.title || topic.name || 'Тема без назви';
+                const countText = topic.count ? ` (${topic.count})` : '';
+                const fileName = topic.file;
+
                 const btn = document.createElement('button');
                 btn.className = 'topic-item';
-                btn.textContent = topic.name;
+                // Формуємо текст кнопки: "Назва (Кількість)"
+                btn.textContent = `${topicName}${countText}`;
+                
                 btn.onclick = () => {
-                    loadTopic(topic.file, topic.name);
+                    loadTopic(fileName, topicName);
                     closeModal();
                 };
+                
                 els.topicsList.appendChild(btn);
             });
         })
-        .catch(err => showError(err.message));
+        .catch(err => {
+            console.error(err);
+            showError('Помилка завантаження тем: ' + err.message);
+        });
 
-    // Управление модальным окном
-    els.topicTrigger.addEventListener('click', openModal);
-    els.closeModal.addEventListener('click', closeModal);
-    els.modal.addEventListener('click', (e) => {
-        if(e.target === els.modal) closeModal();
-    });
+    // Логіка модального вікна
+    if(els.topicTrigger) els.topicTrigger.addEventListener('click', openModal);
+    if(els.closeModal) els.closeModal.addEventListener('click', closeModal);
+    
+    if(els.modal) {
+        els.modal.addEventListener('click', (e) => {
+            if(e.target === els.modal) closeModal();
+        });
+    }
 
     function openModal() {
         els.modal.classList.remove('hidden');
@@ -64,20 +86,27 @@ document.addEventListener('DOMContentLoaded', () => {
         els.modal.classList.add('hidden');
     }
 
+    // Завантаження конкретного уроку
     function loadTopic(filename, topicName) {
+        if(!filename) {
+            showError('Файл теми не вказано в JSON');
+            return;
+        }
+
         showLoading(true);
         els.gameArea.classList.add('hidden');
-        els.currentTopicName.textContent = topicName;
+        if(els.currentTopicName) els.currentTopicName.textContent = topicName;
         
+        // Перевірка шляху: якщо вже є "data/", не додаємо його знову
         const path = filename.startsWith('data/') ? filename : `data/${filename}`;
 
         fetch(path)
             .then(res => {
-                if(!res.ok) throw new Error('Failed to load words');
+                if(!res.ok) throw new Error(`Не вдалося завантажити файл: ${filename}`);
                 return res.json();
             })
             .then(data => {
-                if(!data.length) throw new Error('No words found');
+                if(!Array.isArray(data) || !data.length) throw new Error('Файл слів порожній або має неправильний формат');
                 state.data = data;
                 state.currentIndex = 0;
                 updateCard();
@@ -90,45 +119,64 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // 2. Логика карточек
+    // --- 2. ЛОГІКА КАРТОК ---
+
     function updateCard() {
         if (!state.data.length) return;
         const item = state.data[state.currentIndex];
         
         els.flashcard.classList.remove('flipped');
         
+        // Затримка для анімації перевороту
         setTimeout(() => {
-            els.wordDe.textContent = item.de;
-            els.wordUk.textContent = item.uk;
-            
-            // Адаптивный размер
-            resizeText(els.wordDe, item.de);
-            resizeText(els.wordUk, item.uk);
+            // Перевірка наявності полів de/uk
+            const textDe = item.de || item.german || item.question || '???';
+            const textUk = item.uk || item.ukrainian || item.answer || '???';
 
-            // UI обновления
+            els.wordDe.textContent = textDe;
+            els.wordUk.textContent = textUk;
+            
+            // Адаптивний розмір шрифту
+            resizeText(els.wordDe, textDe);
+            resizeText(els.wordUk, textUk);
+
+            // Оновлення лічильника і прогрес-бару
             els.counter.textContent = `${state.currentIndex + 1} / ${state.data.length}`;
             const progress = ((state.currentIndex + 1) / state.data.length) * 100;
             els.progressFill.style.width = `${progress}%`;
             
+            // Стан кнопок навігації
             els.prevBtn.disabled = state.currentIndex === 0;
             els.nextBtn.disabled = state.currentIndex === state.data.length - 1;
         }, 200);
     }
 
+    // Функція зменшення шрифту для довгого тексту
     function resizeText(element, text) {
-        element.className = 'word-text'; 
-        if (text.length > 25) {
+        element.className = 'word-text'; // Скидання класів
+        if (!text) return;
+        
+        if (text.length > 80) {
+             element.classList.add('very-long'); // Для речень
+             element.style.fontSize = '1.1rem';
+        } else if (text.length > 25) {
             element.classList.add('very-long');
+             element.style.fontSize = '';
         } else if (text.length > 12) {
             element.classList.add('long');
+             element.style.fontSize = '';
+        } else {
+             element.style.fontSize = '';
         }
     }
 
+    // Переворот картки
     els.flashcard.addEventListener('click', (e) => {
         if (e.target.closest('.audio-btn')) return;
         els.flashcard.classList.toggle('flipped');
     });
 
+    // Навігація
     els.nextBtn.addEventListener('click', () => {
         if (state.currentIndex < state.data.length - 1) {
             state.currentIndex++;
@@ -143,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Перемішування
     els.shuffleBtn.addEventListener('click', () => {
         for (let i = state.data.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -152,7 +201,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCard();
     });
 
-    // 3. Audio (TTS)
+    // --- 3. ОЗВУЧЕННЯ (Web Speech API) ---
+
     function loadVoices() {
         state.voices = window.speechSynthesis.getVoices();
     }
@@ -168,31 +218,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function playText(text) {
-        if (!window.speechSynthesis) return;
+        if (!window.speechSynthesis) {
+            alert("Ваш браузер не підтримує озвучення");
+            return;
+        }
 
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'de-DE';
         utterance.rate = 0.85; 
 
-        // Ищем голос Google или любой немецкий
+        // Пріоритет: Google Deutsch -> Будь-який німецький
         const preferredVoice = state.voices.find(v => v.name.includes('Google Deutsch')) 
                             || state.voices.find(v => v.lang.includes('de'));
         
         if (preferredVoice) utterance.voice = preferredVoice;
 
         utterance.onerror = (e) => {
-            if(e.error !== 'interrupted' && e.error !== 'canceled') {
-                const fallback = new SpeechSynthesisUtterance(text);
-                fallback.lang = 'de-DE';
-                window.speechSynthesis.speak(fallback);
-            }
+            console.warn('TTS Warning:', e);
         };
 
         window.speechSynthesis.speak(utterance);
     }
 
-    // Helpers
+    // --- Допоміжні функції ---
+
     function showLoading(show) {
         els.loading.classList.toggle('hidden', !show);
     }
@@ -200,6 +250,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function showError(msg) {
         els.errorMsg.textContent = msg;
         els.errorMsg.classList.remove('hidden');
-        setTimeout(() => els.errorMsg.classList.add('hidden'), 4000);
+        setTimeout(() => els.errorMsg.classList.add('hidden'), 5000);
     }
 });
